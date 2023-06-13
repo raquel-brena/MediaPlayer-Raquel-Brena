@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
+   <children>
+      <SplitPane dividerPositions="0.36869747899159666" pickOnBounds="false" prefHeight="520.0" prefWidth="954.0">
+        <items>
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="518.0" prefWidth="594.0">
+               <children>
+                  <MenuBar layoutY="1.0" prefHeight="27.0" prefWidth="348.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="Perfil">
+                        <items>
+                          <MenuItem fx:id="virarVipMenuItem" mnemonicParsing="false" text="Virar VIP" />
+                              <MenuItem fx:id="mnLogout" mnemonicParsing="false" onAction="#logout" text="Logout" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Música">
+                        <items>
+                          <MenuItem fx:id="mnAddMusica" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Administrador">
+                           <items>
+                              <MenuItem fx:id="mnAddMusica1" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
+                           </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <Label fx:id="usernameLabel" layoutX="143.0" layoutY="69.0" />
+                  <TabPane layoutX="15.0" layoutY="167.0" prefHeight="343.0" prefWidth="316.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Diretório">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView fx:id="listViewMusicas" fixedCellSize="25.0" prefHeight="317.0" prefWidth="316.0">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow height="255.0" radius="127.0" width="255.0">
+                                             <color>
+                                                <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ListView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Playlists">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <ListView fx:id="listViewMusicas1" fixedCellSize="25.0" layoutY="-1.0" prefHeight="317.0" prefWidth="316.0">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow height="255.0" radius="127.0" width="255.0">
+                                             <color>
+                                                <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                             </color>
+                                          </DropShadow>
+                                       </effect>
+                                    </ListView>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+                  <ImageView fitHeight="90.0" fitWidth="139.0" layoutX="15.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="518.0" prefWidth="724.0">
+               <children>
+                  <ImageView fitHeight="133.0" fitWidth="139.0" layoutX="233.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                     <image>
+                        <Image url="@../../../../../../../../../../Pictures/a-1/Originals/12642742_10153257310426512_7395375582923139646_n.jpg" />
+                     </image></ImageView>
+                  <AnchorPane layoutX="7.0" layoutY="402.0" prefHeight="102.0" prefWidth="585.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <ProgressBar layoutX="6.0" layoutY="79.0" prefHeight="20.0" prefWidth="536.0" progress="0.0">
+                           <effect>
+                              <MotionBlur />
+                           </effect>
+                        </ProgressBar>
+                        <Label layoutX="20.0" layoutY="48.0" text="Label" />
+                        <Label fx:id="nameMusicLabel" layoutX="20.0" layoutY="29.0" text="Label" />
+                        <Label fx:id="nameMusicLabel1" layoutX="549.0" layoutY="80.0" text="Label" />
+                        <Button layoutX="268.0" layoutY="44.0" mnemonicParsing="false" text="Play">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Button layoutX="223.0" layoutY="44.0" mnemonicParsing="false" text="Stop">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Button layoutX="310.0" layoutY="44.0" mnemonicParsing="false" text="Pause">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Button layoutX="196.0" layoutY="44.0" mnemonicParsing="false" text="&lt;">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Button layoutX="362.0" layoutY="44.0" mnemonicParsing="false" text="&gt;">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Slider layoutX="462.0" layoutY="49.0" prefHeight="16.0" prefWidth="103.0" />
+                        <Button layoutX="425.0" layoutY="44.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="18.0" text="&gt;">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <Button layoutX="167.0" layoutY="44.0" mnemonicParsing="false" text="&amp;">
+                           <effect>
+                              <InnerShadow>
+                                 <color>
+                                    <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
+                                 </color>
+                              </InnerShadow>
+                           </effect>
+                        </Button>
+                        <ToggleButton layoutX="79.0" layoutY="44.0" mnemonicParsing="false" text="Aleatório" />
+                     </children>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.44312864542007446" green="0.3837719261646271" blue="0.8289473652839661" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </AnchorPane>
+                  <ListView layoutX="18.0" layoutY="183.0" prefHeight="200.0" prefWidth="564.0" />
+                  <Text layoutX="18.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PLAYLIST NAME">
+                     <font>
+                        <Font name="Futura-Bold" size="27.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="333.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.PanelNovaMusicaController">
+   <children>
+      <Pane layoutX="11.0" layoutY="66.0" prefHeight="183.0" prefWidth="506.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+         <children>
+            <GridPane alignment="CENTER" layoutX="15.0" layoutY="64.0" prefHeight="80.0" prefWidth="458.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="144.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="200.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="26.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label contentDisplay="CENTER" text="Titulo" textAlignment="RIGHT" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Label text="Artista" textAlignment="RIGHT" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Button fx:id="escolherArquivoButton" mnemonicParsing="false" onAction="#showFileChooser" prefHeight="27.0" prefWidth="143.0" text="Selecionar Música" GridPane.rowIndex="2" />
+                  <TextField fx:id="textFieldMusicaArtista" prefHeight="66.0" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="textFieldMusicaTitulo" prefHeight="27.0" prefWidth="262.0" GridPane.columnIndex="1" />
+                  <Text fx:id="textFieldMusicaCaminho" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="191.9814453125" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+            <Label contentDisplay="CENTER" layoutX="173.0" layoutY="14.0" prefHeight="19.0" prefWidth="143.0" text="Nova Música" textAlignment="CENTER">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+         </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN">
+               <color>
+                  <Color red="0.09095800668001175" green="0.44736841320991516" blue="0.08491715043783188" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Pane>
+      <Button fx:id="CadastroBotaoConfirmar" layoutX="360.0" layoutY="279.0" mnemonicParsing="false" onAction="#ButtonCadastrarMusica" text="Confirmar" />
+      <Button fx:id="CadastroBotaoCancelar" layoutX="447.0" layoutY="279.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar" />
+   </children>
+</AnchorPane>

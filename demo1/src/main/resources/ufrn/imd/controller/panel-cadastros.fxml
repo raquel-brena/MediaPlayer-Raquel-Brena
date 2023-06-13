@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="400.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.controllerCadastros">
+    <children>
+        <Pane layoutX="123.0" layoutY="83.0" prefHeight="111.0" prefWidth="335.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+         <children>
+              <GridPane alignment="CENTER" layoutX="44.0" layoutY="11.0" prefHeight="90.0" prefWidth="227.0">
+                  <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="70.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="137.0" minWidth="10.0" prefWidth="130.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                  <children>
+                      <Label contentDisplay="CENTER" text="Nome" textAlignment="RIGHT" />
+                      <Label text="Email" textAlignment="RIGHT" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                      <Label text="Senha" textAlignment="RIGHT" GridPane.rowIndex="2" />
+                      <TextField fx:id="textFieldCadastroNome" prefHeight="27.0" prefWidth="181.0" GridPane.columnIndex="1" />
+                      <TextField fx:id="textFieldCadastroEmail" prefHeight="27.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                      <TextField fx:id="textFieldCadastroSenha" prefHeight="27.0" prefWidth="176.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  </children>
+              </GridPane>
+         </children></Pane>
+        <Button fx:id="CadastroBotaoConfirmar" layoutX="258.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleButtonConfirmar" text="Confirmar" AnchorPane.bottomAnchor="173.0" AnchorPane.rightAnchor="266.0" />
+        <Button fx:id="CadastroBotaoCancelar" layoutX="345.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar" AnchorPane.bottomAnchor="173.0" AnchorPane.rightAnchor="187.0" />
+    </children>
+
+</AnchorPane>
