@@ -1,5 +1,6 @@
 package ufrn.imd.controller;
 
+import ufrn.imd.HelloApplication;
 import ufrn.imd.entities.Usuario;
 import ufrn.imd.entities.UsuarioComum;
 import javafx.fxml.FXML;

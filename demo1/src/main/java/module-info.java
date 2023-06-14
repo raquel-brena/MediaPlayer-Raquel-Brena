@@ -9,4 +9,6 @@ module com.example.demo1 {
 
     opens ufrn.imd.controller to javafx.fxml;
     exports ufrn.imd.controller;
+    exports ufrn.imd;
+    opens ufrn.imd to javafx.fxml;
 }

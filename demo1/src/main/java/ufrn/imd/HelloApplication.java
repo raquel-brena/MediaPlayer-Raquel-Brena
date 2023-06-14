@@ -1,9 +1,11 @@
-package ufrn.imd.controller;
+package ufrn.imd;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ufrn.imd.controller.ControllerLogin;
+import ufrn.imd.controller.ControllerPlayer;
 
 import java.io.IOException;
 
@@ -16,10 +18,10 @@ public class HelloApplication extends Application {
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
 
-        FXMLLoader fxmlLoaderPlayer = new FXMLLoader(HelloApplication.class.getResource("panel-player.fxml"));
+        FXMLLoader fxmlLoaderPlayer = new FXMLLoader(HelloApplication.class.getResource("controller/panel-player.fxml"));
         playerScene = new Scene(fxmlLoaderPlayer.load());
 
-        FXMLLoader fxmlLoaderLogin = new FXMLLoader(HelloApplication.class.getResource("panel-login.fxml"));
+        FXMLLoader fxmlLoaderLogin = new FXMLLoader(HelloApplication.class.getResource("controller/panel-login.fxml"));
         loginScene = new Scene(fxmlLoaderLogin.load());
 
         ControllerLogin controllerLogin = fxmlLoaderLogin.getController();
