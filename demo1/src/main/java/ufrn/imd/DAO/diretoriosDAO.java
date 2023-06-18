@@ -15,8 +15,8 @@ import java.util.List;
  * Classe responsável por acessar e manipular os dados dos diretórios.
  */
 public class diretoriosDAO {
-    private static final String SRC_DIRETORIOS = "src/diretorios.txt";
-    private static final String SRC_MUSICAS = "src/musicas.txt";
+    private static final String SRC_DIRETORIOS = "demo1/src/diretorios.txt";
+    private static final String SRC_MUSICAS = "demo1/src/musicas.txt";
     private static List<String> bd_dir_caminhos;
     private static List<Directory> bd_diretorios;
     private static List<Musica> bd_allMusica;

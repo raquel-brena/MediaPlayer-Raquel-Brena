@@ -11,7 +11,7 @@ public abstract class Usuario {
     private boolean isAdmin;
     private Directory directory;
     private boolean isOnline;
-    private static usuarioDAO DAO_USUARIO = new usuarioDAO();
+    private static final usuarioDAO DAO_USUARIO = new usuarioDAO();
 
     public Usuario() {
     }

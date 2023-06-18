@@ -1,10 +1,7 @@
 package ufrn.imd.controller;
 
 import ufrn.imd.HelloApplication;
-import ufrn.imd.entities.Musica;
-import ufrn.imd.entities.Usuario;
-import ufrn.imd.entities.UsuarioComum;
-import ufrn.imd.entities.UsuarioVip;
+import ufrn.imd.entities.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,9 +57,14 @@ public class ControllerPlayer {
     private MenuItem mnAddMusica;
     @FXML
     private MenuItem mnLogout;
+    @FXML
+    private MenuItem mnVirarVIP;
 
     @FXML
     private ListView<Musica> listViewMusicas;
+
+    @FXML
+    private ListView<Directory> listViewPlaylists;
 
     private Stage dialogStage;
 
@@ -70,6 +72,7 @@ public class ControllerPlayer {
     private File[] files;
     private List<File> fileSongs;
     private List<Musica> SONGS_ONLINE;
+    private List<Directory> PLAYLISTS_ONLINE;
 
     private int songNumber;
     private Timer time;
@@ -178,14 +181,46 @@ public class ControllerPlayer {
      * O usuário comum será removido do DAO de usuários e substituído pelo usuário VIP.
      */
     public void tornarSeVip() {
+        Usuario usuarioAux = USUARIO_ONLINE;
         if (USUARIO_ONLINE instanceof UsuarioComum) {
             Usuario usuarioVip = new UsuarioVip();
             usuarioVip.setNome(USUARIO_ONLINE.getNome());
             usuarioVip.setEmail(USUARIO_ONLINE.getEmail());
             usuarioVip.setSenha(USUARIO_ONLINE.getSenha());
             usuarioVip.setAdmin(USUARIO_ONLINE.isAdmin());
+            usuarioVip.setDirectory(USUARIO_ONLINE.getDirectory());
 
             USUARIO_ONLINE = usuarioVip;
+            USUARIO_ONLINE.getDaoUsuario().excluirUsuario(usuarioAux.getId());
+        }
+    }
+
+    @FXML
+    public void setMnVirarVIP() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(controllerCadastros.class.getResource("panela-pagamento.fxml"));
+            AnchorPane virarVIP = loader.load();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Torne-se VIP");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+
+            Scene scene = new Scene(virarVIP);
+            dialogStage.setScene(scene);
+
+            ControllerVIP controllerVIP = loader.getController();
+            controllerVIP.setDialogStage(dialogStage);
+
+            dialogStage.showAndWait();
+
+            if (controllerVIP.isButtonConfirmar()) {
+                tornarSeVip();
+            }
+        } catch (IOException e) {
+            // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
+            System.out.println("Ocorreu um erro ao carregar o painel de nova música.");
+            e.printStackTrace();
         }
     }
 

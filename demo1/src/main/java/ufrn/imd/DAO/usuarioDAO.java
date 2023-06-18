@@ -4,16 +4,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ufrn.imd.entities.ArquivoUtil;
-import ufrn.imd.entities.Directory;
-import ufrn.imd.entities.Usuario;
-import ufrn.imd.entities.UsuarioComum;
+import ufrn.imd.entities.*;
 
 /**
  * Classe responsável pela persistência dos dados dos usuários em um arquivo de texto.
  */
 public class usuarioDAO  {
-    private static final String SRC_USUARIOS = "src/usuarios.txt";
+    private static final String SRC_USUARIOS = "C:\\Users\\DAVID MATEUS\\IdeaProjects\\MediaPlayer-Raquel-Brena\\demo1\\src\\usuarios.txt";
+
     private static List<Usuario> bd_usuarios;
     private static int id = 0;
     private ArquivoUtil arquivo = new ArquivoUtil();
@@ -36,9 +34,14 @@ public class usuarioDAO  {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dadosUsuario = linha.split(",");
-                Usuario usuario = new UsuarioComum(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
+                Usuario usuario;
+                if (dadosUsuario[5].equals("UsuarioComum")){
+                    usuario = new UsuarioComum(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
                 usuario.setId(Integer.parseInt(dadosUsuario[0]));
-
+                } else {
+                    usuario = new UsuarioVip(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
+                    usuario.setId(Integer.parseInt(dadosUsuario[0]));
+                }
                 //adiciondo diretorio ao usuário.
                 Directory directory = new Directory();
                 directory.getDaoDiretorios().lerArquivoDiretorio();
@@ -52,6 +55,7 @@ public class usuarioDAO  {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("tentou ler");
         }
     }
 
@@ -64,7 +68,7 @@ public class usuarioDAO  {
     public void atualizarArquivo(List<Usuario> usuarios) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_USUARIOS, false))) {
             for (Usuario usuario : usuarios) {
-                String linha = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin();
+                String linha = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin()+ "," +  usuario.getClass().getName();
                 bw.write(linha);
                 bw.newLine();
             }
@@ -100,7 +104,7 @@ public class usuarioDAO  {
         for (Usuario usuarios : bd_usuarios) {
             System.out.println(usuarios.getEmail());
         }
-        arquivo.escreverArquivo(SRC_USUARIOS, usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin() + "," + usuario.getDirectory().getCaminho());
+        arquivo.escreverArquivo(SRC_USUARIOS, usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin() + "," + usuario.getDirectory().getCaminho()+ "," +  usuario.getClass().getName());
         return true; // Retorna verdadeiro para indicar que o usuário foi adicionado com sucesso
     }
 
@@ -110,18 +114,17 @@ public class usuarioDAO  {
      * @param id ID do usuário a ser excluído
      */
     public void excluirUsuario(int id) {
-        List<Usuario> usuarios = listar();
         boolean encontrado = false;
 
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : bd_usuarios) {
             if (usuario.getId() == id) {
-                usuarios.remove(usuario);
+                bd_usuarios.remove(usuario);
                 encontrado = true;
                 break;
             }
         }
         if (encontrado) {
-            atualizarArquivo(usuarios);
+            atualizarArquivo(bd_usuarios);
             System.out.println("Usuário excluído com sucesso.");
         } else {
             System.out.println("Usuário não encontrado.");
