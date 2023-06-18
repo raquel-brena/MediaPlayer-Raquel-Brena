@@ -10,7 +10,9 @@ import ufrn.imd.entities.*;
  * Classe responsável pela persistência dos dados dos usuários em um arquivo de texto.
  */
 public class usuarioDAO  {
-    private static final String SRC_USUARIOS = "C:\\Users\\DAVID MATEUS\\IdeaProjects\\MediaPlayer-Raquel-Brena\\demo1\\src\\usuarios.txt";
+
+
+    private static final String SRC_USUARIOS = "C:\\Users\\RB\\Desktop\\java\\mediaplyer\\demo1\\src\\usuarios.txt";
 
     private static List<Usuario> bd_usuarios;
     private static int id = 0;
@@ -35,7 +37,7 @@ public class usuarioDAO  {
             while ((linha = br.readLine()) != null) {
                 String[] dadosUsuario = linha.split(",");
                 Usuario usuario;
-                if (dadosUsuario[5].equals("UsuarioComum")){
+                if (dadosUsuario[5].equals("Usuario Comum")){
                     usuario = new UsuarioComum(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
                 usuario.setId(Integer.parseInt(dadosUsuario[0]));
                 } else {
@@ -68,8 +70,8 @@ public class usuarioDAO  {
     public void atualizarArquivo(List<Usuario> usuarios) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_USUARIOS, false))) {
             for (Usuario usuario : usuarios) {
-                String linha = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin()+ "," +  usuario.getClass().getName();
-                bw.write(linha);
+                String linhaEscrever = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin()+ "," +  usuario.getClass().getSimpleName();
+                bw.write(linhaEscrever);
                 bw.newLine();
             }
         } catch (IOException e) {
@@ -104,7 +106,9 @@ public class usuarioDAO  {
         for (Usuario usuarios : bd_usuarios) {
             System.out.println(usuarios.getEmail());
         }
-        arquivo.escreverArquivo(SRC_USUARIOS, usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin() + "," + usuario.getDirectory().getCaminho()+ "," +  usuario.getClass().getName());
+        String linhaEscrever = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin()+ "," +  usuario.getClass().getSimpleName();
+
+        arquivo.escreverArquivo(SRC_USUARIOS, linhaEscrever);
         return true; // Retorna verdadeiro para indicar que o usuário foi adicionado com sucesso
     }
 
@@ -168,6 +172,41 @@ public class usuarioDAO  {
 
         return bd_usuarios;
     }
+
+
+    public Usuario updateVIP(Usuario usuarioOnline) {
+
+            System.out.println("instancia ok ");
+            Usuario usuarioVIP = new UsuarioVip();
+            for (int i = 0; i < bd_usuarios.size(); i++) {
+                Usuario usuario = bd_usuarios.get(i);
+                if (usuarioOnline.getId() == usuario.getId()) {
+                    System.out.println("encontrado ok ");
+                    // Atualizar informações do usuário para VIP
+                    usuarioVIP.setId(usuario.getId());
+                    usuarioVIP.setNome(usuario.getNome());
+                    usuarioVIP.setEmail(usuario.getEmail());
+                    usuarioVIP.setSenha(usuario.getSenha());
+                    usuarioVIP.setAdmin(usuario.isAdmin());
+                    usuarioVIP.setDirectory(usuario.getDirectory());
+
+
+                    // Substituir usuário comum pelo usuário VIP na lista
+                    bd_usuarios.set(i, usuarioVIP);
+                    break;
+                }
+
+
+
+            // Atualizar arquivo de texto
+            atualizarArquivo(bd_usuarios);
+            System.out.println("Usuário atualizado para VIP com sucesso.");
+            return usuarioVIP;
+        }
+        return null;
+    }
+
+
 
 
 }

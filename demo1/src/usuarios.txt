@@ -1,5 +1,1 @@
-1,Raquel,email,senha,false,src/main/diretorios/RaquelDiretorio
-2,David,email2,senha,false,src/main/diretorios/DavidDiretorio
-3,Anitta,anitaemail,senha,false,src/main/diretorios/AnittaDiretorio
-4,Ludmilla,ludemail,senha,false,src/main/diretorios/LudmillaDiretorio
-5,Davidd,DavidEmail,senha,false,src/main/diretorios/DaviddDiretorio
+1,nome,email,senha,false,UsuarioVip

@@ -1,16 +1,25 @@
 package ufrn.imd.controller;
 
-import com.sun.glass.ui.ClipboardAssistance;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import ufrn.imd.entities.Usuario;
+import ufrn.imd.entities.UsuarioComum;
+import ufrn.imd.entities.UsuarioVip;
 
-public class ControllerVIP {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ControllerVIP implements Initializable {
 
     @FXML
     private Label valorVIP;
+
+    @FXML
+    private Label msgSucessoLabel;
+
 
     @FXML
     private Button virarVIPButton;
@@ -18,11 +27,15 @@ public class ControllerVIP {
     @FXML
     private Button cancelarButton;
 
-    private boolean buttonConfirmar = false;
+    private boolean buttonConfirmar;
 
+    Usuario usuarioVIP = new UsuarioVip();
+    Usuario usuarioComum = new UsuarioComum();
     private Stage dialogStage;
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+        buttonConfirmar = false;
+        this.msgSucessoLabel.setVisible(false);
     }
 
     public Label getValorVIP() {
@@ -35,12 +48,15 @@ public class ControllerVIP {
 
     @FXML
     public void comprarVIP(){
-        buttonConfirmar = true;
+
+        this.usuarioVIP = usuarioVIP.getDaoUsuario().updateVIP(usuarioComum);
+
+        this.buttonConfirmar = true;
+        msgSucessoLabel.setVisible(true);
     }
 
     @FXML
     public void handleButtonCancelar() {
-        buttonConfirmar = false;
         this.dialogStage.close();
     }
 
@@ -50,5 +66,27 @@ public class ControllerVIP {
 
     public void setButtonConfirmar(boolean buttonConfirmar) {
         this.buttonConfirmar = buttonConfirmar;
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void setUsuarioComum(Usuario usuarioOnline) {
+        this.usuarioComum = usuarioOnline;
+
+    }
+
+    public Usuario getUsuarioVIP() {
+        return usuarioVIP;
+    }
+
+    public void setUsuarioVIP(Usuario usuarioVIP) {
+        this.usuarioVIP = usuarioVIP;
+    }
+
+    public Usuario getUsuarioComum() {
+        return usuarioComum;
     }
 }

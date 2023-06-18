@@ -1,5 +1,1 @@
-src\main\diretorios\RaquelDiretorio
-src\main\diretorios\DavidDiretorio
-src\main\diretorios\AnittaDiretorio
-src\main\diretorios\LudmillaDiretorio
-src\main\diretorios\DaviddDiretorio
+src\main\diretorios\nomeDiretorio

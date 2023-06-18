@@ -1,5 +1,7 @@
 package ufrn.imd.controller;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import ufrn.imd.HelloApplication;
 import ufrn.imd.entities.*;
 import javafx.collections.ObservableList;
@@ -48,10 +50,14 @@ public class ControllerPlayer {
     private Label nameMusicLabel;
 
     @FXML
+    private ImageView userImage;
+    @FXML
     private Label nameArtistLabel;
 
     @FXML
     private Label usernameLabel;
+    @FXML
+    private Label vipStatusLabel;
 
     @FXML
     private MenuItem mnAddMusica;
@@ -98,8 +104,19 @@ public class ControllerPlayer {
      * @param usuario O usuário online.
      */
     public void setUsuarioOnline(Usuario usuario) {
+
         this.USUARIO_ONLINE = usuario;
         this.SONGS_ONLINE = USUARIO_ONLINE.getDirectory().getAllSongs();
+        this.usernameLabel.setText(USUARIO_ONLINE.getNome());
+
+        if (USUARIO_ONLINE instanceof UsuarioVip){
+            vipStatusLabel.setText("ATIVO");
+        } else {
+            vipStatusLabel.setText("INATIVO");
+        }
+        Image image = new Image("demo1/src/extra/png-user.png");
+        userImage.setImage(image);
+
         atualizarListaMusica();
 
     }
@@ -146,7 +163,7 @@ public class ControllerPlayer {
     public void showFXMLPanelNovaMusica() throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controllerCadastros.class.getResource("panel-nova-musica.fxml"));
+            loader.setLocation(PanelNovaMusicaController.class.getResource("panel-nova-musica.fxml"));
             AnchorPane cadastroMusica = loader.load();
 
             Stage dialogStage = new Stage();
@@ -166,6 +183,7 @@ public class ControllerPlayer {
                 USUARIO_ONLINE.getDirectory().adicionarMusicaFile(novaMusica);
                 System.out.println("Música adicionada: " + novaMusica.getTitulo());
                 atualizarListaMusica();
+                dialogStage.close();
             }
         } catch (IOException e) {
             // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
@@ -180,26 +198,12 @@ public class ControllerPlayer {
      * ele será substituído por um objeto do tipo {@UsuarioVip}.
      * O usuário comum será removido do DAO de usuários e substituído pelo usuário VIP.
      */
-    public void tornarSeVip() {
-        Usuario usuarioAux = USUARIO_ONLINE;
-        if (USUARIO_ONLINE instanceof UsuarioComum) {
-            Usuario usuarioVip = new UsuarioVip();
-            usuarioVip.setNome(USUARIO_ONLINE.getNome());
-            usuarioVip.setEmail(USUARIO_ONLINE.getEmail());
-            usuarioVip.setSenha(USUARIO_ONLINE.getSenha());
-            usuarioVip.setAdmin(USUARIO_ONLINE.isAdmin());
-            usuarioVip.setDirectory(USUARIO_ONLINE.getDirectory());
-
-            USUARIO_ONLINE = usuarioVip;
-            USUARIO_ONLINE.getDaoUsuario().excluirUsuario(usuarioAux.getId());
-        }
-    }
 
     @FXML
     public void setMnVirarVIP() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(controllerCadastros.class.getResource("panela-pagamento.fxml"));
+            loader.setLocation(ControllerVIP.class.getResource("panel-pagamento.fxml"));
             AnchorPane virarVIP = loader.load();
 
             Stage dialogStage = new Stage();
@@ -214,8 +218,10 @@ public class ControllerPlayer {
 
             dialogStage.showAndWait();
 
+            controllerVIP.setUsuarioComum(USUARIO_ONLINE);
             if (controllerVIP.isButtonConfirmar()) {
-                tornarSeVip();
+                USUARIO_ONLINE = controllerVIP.getUsuarioVIP();
+               // tornarSeVip();
             }
         } catch (IOException e) {
             // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias

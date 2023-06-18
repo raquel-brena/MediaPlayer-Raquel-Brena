@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerVIP">
+   <children>
+      <Pane layoutX="21.0" layoutY="76.0" prefHeight="248.0" prefWidth="506.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+         <children>
+            <Label contentDisplay="CENTER" layoutX="173.0" layoutY="14.0" prefHeight="19.0" prefWidth="143.0" text="Torne-se VIP!" textAlignment="CENTER">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Text fx:id="textFieldMusicaCaminho" layoutX="134.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="191.9814453125" />
+            <Button fx:id="virarVIPButton" layoutX="62.0" layoutY="141.0" mnemonicParsing="false" onAction="#comprarVIP" onMouseClicked="#comprarVIP" prefHeight="27.0" prefWidth="239.0" text="Comprar VIP" />
+            <Button fx:id="cancelarButton" layoutX="309.0" layoutY="142.0" mnemonicParsing="false" onAction="#handleButtonCancelar" prefHeight="25.0" prefWidth="118.0" text="Cancelar" />
+            <Label layoutX="182.0" layoutY="95.0" prefHeight="25.0" prefWidth="76.0" text="Valor do VIP:" textAlignment="RIGHT" />
+            <Label fx:id="valorVIP" layoutX="277.0" layoutY="99.0" text="Valor" textAlignment="RIGHT" />
+            <Label fx:id="msgSucessoLabel" layoutX="170.0" layoutY="209.0" prefHeight="25.0" prefWidth="177.0" text="Parabéns! Você agora é VIP!" textAlignment="RIGHT" />
+         </children>
+         <effect>
+            <DropShadow blurType="GAUSSIAN">
+               <color>
+                  <Color red="0.09095800668001175" green="0.44736841320991516" blue="0.08491715043783188" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Pane>
+   </children>
+</AnchorPane>
