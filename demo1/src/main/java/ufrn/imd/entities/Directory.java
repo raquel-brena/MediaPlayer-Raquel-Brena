@@ -178,23 +178,6 @@ public class Directory {
         return bd_musicas;
     }
 
-    /**
-     * Lê os caminhos das músicas de um arquivo de texto.
-     *
-     * @param filePath o caminho do arquivo de texto
-     * @return a lista de caminhos das músicas
-     */
-    public List<String> readSongPathsFromTextFile(String filePath) {
-        List<String> caminhos = new ArrayList<>();
-
-        try {
-            Path arquivo = Paths.get(filePath);
-            caminhos = Files.readAllLines(arquivo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return caminhos;
-    }
 
     /**
      * Obtém o caminho do diretório.
@@ -230,15 +213,6 @@ public class Directory {
      */
     public List<Musica> getMusicasDiretorio() {
         return bd_musicas;
-    }
-
-    /**
-     * Define a lista de músicas do diretório.
-     *
-     * @param musicasDiretorio a lista de músicas do diretório
-     */
-    public void setMusicasDiretorio(List<Musica> musicasDiretorio) {
-        this.bd_musicas = musicasDiretorio;
     }
 
     /**
@@ -291,7 +265,12 @@ public class Directory {
      *
      * @param musicas a lista de músicas
      */
-    public void setMusicas(List<Musica> musicas) {
+    public void setMusicasPlaylist(List<Musica> musicas) {
+        this.bd_musicas = musicas;
+
+        for (Musica musica : musicas) {
+            arquivo.escreverArquivo(DAO_DIRETORIOS.getSrcMusicas(), musica.getTitulo() + ",," + musica.getArtista() + ",," + musica.getCaminho());
+        }
     }
 
     @Override

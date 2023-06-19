@@ -85,16 +85,18 @@ public class diretoriosDAO {
                 diretorio.setCaminho(caminhoPath);
                 diretorio.setFile(diretorioUsuario);
 
-                // Separando música por diretório
-                for (Musica musica : bd_allMusica) {
-                    if (musica.getCaminho().contains(caminhoPath)) {
-                        diretorio.adicionarMusicaObj(musica);
-                        System.out.println("Musica: " + musica.getTitulo() + " adicionada em: " + musica.getCaminho());
+                if (!caminhoPath.contains("Playlist")) {
+                    // Separando música por diretório
+                    for (Musica musica : bd_allMusica) {
+                        if (musica.getCaminho().contains(caminhoPath)) {
+                            diretorio.adicionarMusicaObj(musica);
+                            System.out.println("Musica: " + musica.getTitulo() + " adicionada em: " + musica.getCaminho());
+                        }
                     }
-                }
 
-                // Adiciona o objeto Directory na lista bd_diretorios
-                bd_diretorios.add(diretorio);
+                    // Adiciona o objeto Directory na lista bd_diretorios
+                    bd_diretorios.add(diretorio);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -65,12 +65,14 @@ public class ControllerPlayer {
     private MenuItem mnLogout;
     @FXML
     private MenuItem mnVirarVIP;
+    @FXML
+    private MenuItem mnNewPlaylist;
+
+    @FXML
+    private Button newPlaylistButton;
 
     @FXML
     private ListView<Musica> listViewMusicas;
-
-    @FXML
-    private ListView<Directory> listViewPlaylists;
 
     private Stage dialogStage;
 
@@ -88,6 +90,7 @@ public class ControllerPlayer {
     private MediaPlayer mediaPlayer;
     private static Usuario USUARIO_ONLINE;
     private ObservableList<Musica> MusicaObservableList;
+    private ControllerNovaPlaylist controllerNovaPlaylist;
 
     /**
      * Construtor padrão.
@@ -107,14 +110,19 @@ public class ControllerPlayer {
 
         this.USUARIO_ONLINE = usuario;
         this.SONGS_ONLINE = USUARIO_ONLINE.getDirectory().getAllSongs();
-        this.usernameLabel.setText(USUARIO_ONLINE.getNome());
+        this.usernameLabel.setText("Usuario: " + USUARIO_ONLINE.getNome());
 
         if (USUARIO_ONLINE instanceof UsuarioVip){
-            vipStatusLabel.setText("ATIVO");
+            vipStatusLabel.setText("VIP ATIVO");
+            mnNewPlaylist.setDisable(false);
+
         } else {
-            vipStatusLabel.setText("INATIVO");
+            vipStatusLabel.setText("VIP INATIVO");
+
+           mnNewPlaylist.setDisable(true);
         }
-        Image image = new Image("demo1/src/extra/png-user.png");
+
+        Image image = new Image("C:\\Users\\RB\\Desktop\\java\\mediaplyer\\demo1\\src\\extra\\png-user.png");
         userImage.setImage(image);
 
         atualizarListaMusica();
@@ -201,33 +209,43 @@ public class ControllerPlayer {
 
     @FXML
     public void setMnVirarVIP() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(ControllerVIP.class.getResource("panel-pagamento.fxml"));
-            AnchorPane virarVIP = loader.load();
+        if (USUARIO_ONLINE instanceof UsuarioVip) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario já possui cadastro VIP");
+        } else {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(ControllerVIP.class.getResource("panel-pagamento.fxml"));
+                AnchorPane virarVIP = loader.load();
 
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Torne-se VIP");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Torne-se VIP");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
 
-            Scene scene = new Scene(virarVIP);
-            dialogStage.setScene(scene);
+                Scene scene = new Scene(virarVIP);
+                dialogStage.setScene(scene);
 
-            ControllerVIP controllerVIP = loader.getController();
-            controllerVIP.setDialogStage(dialogStage);
+                ControllerVIP controllerVIP = loader.getController();
+                controllerVIP.setDialogStage(dialogStage);
 
-            dialogStage.showAndWait();
+                dialogStage.showAndWait();
 
-            controllerVIP.setUsuarioComum(USUARIO_ONLINE);
-            if (controllerVIP.isButtonConfirmar()) {
-                USUARIO_ONLINE = controllerVIP.getUsuarioVIP();
-               // tornarSeVip();
+                controllerVIP.setUsuarioComum(USUARIO_ONLINE);
+                if (controllerVIP.isButtonConfirmar()) {
+                    USUARIO_ONLINE = controllerVIP.getUsuarioVIP();
+                    // tornarSeVip();
+                }
+            } catch (IOException e) {
+                // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
+                System.out.println("Ocorreu um erro ao carregar o painel de nova música.");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
-            System.out.println("Ocorreu um erro ao carregar o painel de nova música.");
-            e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void showFXMLPanelPlaylist(){
+        HelloApplication.changeScreen("playlist",USUARIO_ONLINE.getNome());
+        controllerNovaPlaylist.setUsuarioOnline(USUARIO_ONLINE);
     }
 
     /**
@@ -237,5 +255,9 @@ public class ControllerPlayer {
      */
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+    }
+
+    public void setControllerPlaylist(ControllerNovaPlaylist controllerNovaPlaylist) {
+        this.controllerNovaPlaylist = controllerNovaPlaylist;
     }
 }

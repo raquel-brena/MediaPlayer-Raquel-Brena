@@ -21,47 +21,49 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
    <children>
-      <SplitPane dividerPositions="0.4852941176470588" pickOnBounds="false" prefHeight="446.0" prefWidth="954.0">
+      <MenuBar prefHeight="27.0" prefWidth="960.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Perfil">
+            <items>
+              <MenuItem fx:id="mnVirarVIP" mnemonicParsing="false" onAction="#setMnVirarVIP" text="Torne-se VIP" />
+                  <MenuItem fx:id="mnLogout" mnemonicParsing="false" onAction="#logout" text="Logout" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Player">
+            <items>
+              <MenuItem fx:id="mnAddMusica" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
+                  <MenuItem fx:id="mnNewPlaylist" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Nova Playlist" />
+                  <MenuItem fx:id="mnAddMusica21" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Visualizar Playlists" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Administrador">
+               <items>
+                  <MenuItem fx:id="mnAddMusica1" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.498960498960499" layoutX="-1.0" layoutY="27.0" pickOnBounds="false" prefHeight="404.0" prefWidth="964.0">
         <items>
-          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="444.0" prefWidth="595.0">
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="489.0">
                <children>
-                  <MenuBar layoutY="1.0" prefHeight="27.0" prefWidth="960.0">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="Perfil">
-                        <items>
-                          <MenuItem fx:id="mnVirarVIP" mnemonicParsing="false" onAction="#setMnVirarVIP" text="Torne-se VIP" />
-                              <MenuItem fx:id="mnLogout" mnemonicParsing="false" onAction="#logout" text="Logout" />
-                        </items>
-                      </Menu>
-                      <Menu mnemonicParsing="false" text="Música">
-                        <items>
-                          <MenuItem fx:id="mnAddMusica" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
-                        </items>
-                      </Menu>
-                        <Menu mnemonicParsing="false" text="Administrador">
-                           <items>
-                              <MenuItem fx:id="mnAddMusica1" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
-                           </items>
-                        </Menu>
-                      <Menu mnemonicParsing="false" text="Help">
-                        <items>
-                          <MenuItem mnemonicParsing="false" text="About" />
-                        </items>
-                      </Menu>
-                    </menus>
-                  </MenuBar>
-                  <Label fx:id="usernameLabel" layoutX="159.0" layoutY="59.0" text="Nome Usuario" />
-                  <ImageView fx:id="userImage" fitHeight="90.0" fitWidth="139.0" layoutX="14.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="userImage" fitHeight="90.0" fitWidth="139.0" layoutX="151.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                      <effect>
                         <DropShadow>
                            <color>
                               <Color red="0.3552631437778473" green="0.18914473056793213" blue="0.18914473056793213" />
                            </color>
                         </DropShadow>
-                     </effect></ImageView>
-                  <ListView fixedCellSize="25.0" layoutX="3.0" layoutY="242.0" prefHeight="176.0" prefWidth="453.0" style="-fx-background-radius: 50;">
+                     </effect>
+                  </ImageView>
+                  <ListView fixedCellSize="25.0" layoutX="28.0" layoutY="259.0" prefHeight="129.0" prefWidth="422.0" style="-fx-background-radius: 50;">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -73,26 +75,30 @@
                         </DropShadow>
                      </effect>
                   </ListView>
-                  <ToggleButton layoutX="27.0" layoutY="197.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="405.0" style="-fx-background-radius: 50;" text="DIRETÓRIO" />
-                  <Label fx:id="usernameLabel1" layoutX="159.0" layoutY="78.0" text="VIP: " />
-                  <Label fx:id="vipStatusLabel" layoutX="183.0" layoutY="78.0" text="ATIVO/DESATIVADO" />
+                  <ToggleButton layoutX="37.0" layoutY="218.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="405.0" style="-fx-background-radius: 50;" text="DIRETÓRIO" />
+                  <Pane layoutX="72.0" layoutY="150.0" prefHeight="56.0" prefWidth="298.0">
+                     <children>
+                        <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="19.0" prefWidth="298.0" text="Nome Usuario" />
+                        <Label fx:id="vipStatusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="42.0" prefHeight="19.0" prefWidth="305.0" text="ATIVO/DESATIVADO" />
+                     </children>
+                  </Pane>
                </children>
             </AnchorPane>
-          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="518.0" prefWidth="598.0">
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="447.0">
                <children>
-                  <ImageView fitHeight="133.0" fitWidth="139.0" layoutX="233.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="133.0" fitWidth="139.0" layoutX="234.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
                      <effect>
                         <DropShadow />
-                     </effect></ImageView>
-                  <ListView fx:id="listViewMusicas" layoutX="14.0" layoutY="98.0" prefHeight="326.0" prefWidth="393.0" />
-                  <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAME DIRETORIO">
+                     </effect>
+                  </ImageView>
+                  <ListView fx:id="listViewMusicas" layoutX="15.0" layoutY="85.0" prefHeight="311.0" prefWidth="369.0" />
+                  <Text layoutX="15.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NAME DIRETORIO">
                      <font>
                         <Font name="Futura-Bold" size="27.0" />
                      </font>
                   </Text>
-                  <Button layoutX="417.0" layoutY="98.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="New" />
-                  <Button layoutX="417.0" layoutY="206.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Update" />
-                  <Button layoutX="417.0" layoutY="313.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Delete" />
+                  <Button layoutX="398.0" layoutY="85.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Update" />
+                  <Button layoutX="398.0" layoutY="167.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Delete" />
                </children>
             </AnchorPane>
         </items>
@@ -104,7 +110,7 @@
                   <MotionBlur />
                </effect>
             </ProgressBar>
-            <Label fx:id="nameMusicLabel1" alignment="CENTER" layoutX="322.0" layoutY="29.0" prefHeight="17.0" prefWidth="316.0" text="Nome Música - Artista" textAlignment="CENTER" />
+            <Label fx:id="nameMusicLabel1" alignment="CENTER" layoutX="326.0" layoutY="25.0" prefHeight="17.0" prefWidth="316.0" text="Nome Música - Artista" textAlignment="CENTER" />
             <Button layoutX="54.0" layoutY="44.0" mnemonicParsing="false" text="&lt;">
                <effect>
                   <InnerShadow>

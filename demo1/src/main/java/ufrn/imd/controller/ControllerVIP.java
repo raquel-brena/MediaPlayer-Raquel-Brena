@@ -2,6 +2,7 @@ package ufrn.imd.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -49,7 +50,8 @@ public class ControllerVIP implements Initializable {
     @FXML
     public void comprarVIP(){
 
-        this.usuarioVIP = usuarioVIP.getDaoUsuario().updateVIP(usuarioComum);
+       this.usuarioVIP = usuarioVIP.getDaoUsuario().updateVIP(usuarioComum);
+
 
         this.buttonConfirmar = true;
         msgSucessoLabel.setVisible(true);
@@ -74,8 +76,8 @@ public class ControllerVIP implements Initializable {
     }
 
     public void setUsuarioComum(Usuario usuarioOnline) {
-        this.usuarioComum = usuarioOnline;
 
+        this.usuarioComum = usuarioOnline;
     }
 
     public Usuario getUsuarioVIP() {

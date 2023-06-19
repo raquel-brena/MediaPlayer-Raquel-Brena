@@ -1,1 +1,2 @@
 1,nome,email,senha,false,UsuarioVip
+2,nome2,email2,senha,false,UsuarioComum
