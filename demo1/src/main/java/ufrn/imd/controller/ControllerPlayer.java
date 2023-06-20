@@ -122,8 +122,8 @@ public class ControllerPlayer {
            mnNewPlaylist.setDisable(true);
         }
 
-        Image image = new Image("C:\\Users\\RB\\Desktop\\java\\mediaplyer\\demo1\\src\\extra\\png-user.png");
-        userImage.setImage(image);
+        //Image image = new Image("");
+        //userImage.setImage(image);
 
         atualizarListaMusica();
 
@@ -245,7 +245,7 @@ public class ControllerPlayer {
     @FXML
     public void showFXMLPanelPlaylist(){
         HelloApplication.changeScreen("playlist",USUARIO_ONLINE.getNome());
-        controllerNovaPlaylist.setUsuarioOnline(USUARIO_ONLINE);
+        controllerNovaPlaylist.setUsuarioOnline((UsuarioVip) USUARIO_ONLINE);
     }
 
     /**

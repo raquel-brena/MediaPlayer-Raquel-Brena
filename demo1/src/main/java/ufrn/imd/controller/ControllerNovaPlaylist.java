@@ -7,7 +7,10 @@ import javafx.scene.control.*;
 import ufrn.imd.HelloApplication;
 import ufrn.imd.entities.*;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +34,12 @@ public class ControllerNovaPlaylist {
 
     private ObservableList<Musica> MusicaObservableListPlaylist;
     private ObservableList<Musica> MusicaObservableListDiretorio;
-    private Usuario usuarioVIP;
+    private UsuarioVip usuarioVIP;
     private List<Musica> SONGS_ONLINE_DIRETORIO;
     private List<Musica> SONGS_PLAYLIST;
-
-
     private Directory playlist;
 
-
-    ControllerNovaPlaylist() {
+    public ControllerNovaPlaylist() {
         usuarioVIP = new UsuarioVip();
         SONGS_ONLINE_DIRETORIO = new ArrayList<>();
         SONGS_PLAYLIST = new ArrayList<>();
@@ -47,16 +47,15 @@ public class ControllerNovaPlaylist {
         MusicaObservableListPlaylist = FXCollections.observableArrayList();
         MusicaObservableListDiretorio = FXCollections.observableArrayList();
     }
-    public void setUsuarioOnline(Usuario usuarioOnline) {
+    public void setUsuarioOnline(UsuarioVip usuarioOnline) {
         this.usuarioVIP = usuarioOnline;
         SONGS_ONLINE_DIRETORIO = usuarioOnline.getDirectory().getAllSongs();
         exibirMusicasDiretorio();
     }
 
-    public void addMusicaPlaylist(){
+    public void addMusicaPlaylist() throws IOException {
         Musica musicaSelecionada = listViewSongsDiretorio.getSelectionModel().getSelectedItem();
         if (musicaSelecionada != null) {
-
             MusicaObservableListPlaylist.add(musicaSelecionada);
             SONGS_PLAYLIST.add(musicaSelecionada);
             listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
@@ -72,41 +71,39 @@ public class ControllerNovaPlaylist {
                     }
                 }
             });
+
+           /* try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtPlaylist))) {
+                writer.write(musicaSelecionada.getTitulo()+","+musicaSelecionada.getCaminho()+","+musicaSelecionada.getArtista());
+                writer.newLine();
+        }*/
         }
     }
 
-    public boolean createPath(){
-        String nomePlaylist = nomePlaylistTextField.getText();
-        String caminho = usuarioVIP.getDirectory().getCaminho()+"/"+nomePlaylist+"Playlist";
+    /**
+     * Cria uma PASTA e uma arquivo .txt para guardar informações da playlist do usuario.
+     * @return
+     * @throws IOException
+     */
 
-        File diretorioPlaylist = new File(caminho);
 
-        // Verificar se a pasta já existe
-        if (diretorioPlaylist.exists()) {
-            System.out.println("A Playlist de músicas do usuário já existe.");
-            return false;
-        }
 
-        // Criar a pasta do usuário
-        if (diretorioPlaylist.mkdirs()) {
-            playlist.setFile(diretorioPlaylist);
-            playlist.setMusicasPlaylist(SONGS_PLAYLIST);
-            playlist.setCaminho(caminho);
-            //Acessar um DAO de playlist e
-            playlist.getDaoDiretorios().salvarMemoria(playlist);
-            playlist.getDaoDiretorios().salvarSrcDiretorio(playlist);
-            System.out.println("Pasta de músicas do usuário criada com sucesso.");
-        } else {
-            System.out.println("Erro ao criar a pasta de músicas do usuário.");
-            return false;
-        }
-
-        return true;
-    }
     @FXML
-    public void createPlaylist (){
-       createPath();
-    }
+    public void createPlaylist() throws IOException {
+        usuarioVIP.criarPlaylist(usuarioVIP,nomePlaylistTextField.getText(),SONGS_PLAYLIST);
+       /**
+
+        //ControllerNovaPlaylist >> UsuarioVIP >> Directory >> DAO
+        Directory playlist = new Directory();
+        playlist.setBd_musicas(SONGS_PLAYLIST);
+        playlist.setCaminho(caminhoPath);
+        playlist.setFile();
+
+
+        Directory.getDaoDiretorios().salvarMusicasPlaylist(SONGS_PLAYLIST);
+        Directory.getDaoDiretorios().createPlaylist((UsuarioVip) usuarioVIP, nomePlaylist, SONGS_PLAYLIST);
+    */}
+
+
 
     @FXML
     public void removeMusicaPlaylist() {
@@ -114,19 +111,6 @@ public class ControllerNovaPlaylist {
         if (musicaSelecionada != null) {
             MusicaObservableListPlaylist.remove(musicaSelecionada);
             SONGS_PLAYLIST.remove(musicaSelecionada);
-            listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
-            listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
-                @Override
-                protected void updateItem(Musica musica, boolean empty) {
-                    super.updateItem(musica, empty);
-
-                    if (empty || musica == null) {
-                        setText(null);
-                    } else {
-                        setText(musica.getTitulo() + " - " + musica.getArtista());
-                    }
-                }
-            });
         }
     }
 

@@ -1,11 +1,16 @@
 package ufrn.imd.entities;
 
 
+import ufrn.imd.DAO.diretoriosDAO;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UsuarioVip extends Usuario {
     private List<Directory> playlists;
+
 
     public UsuarioVip() {
         this.playlists = playlists;
@@ -16,12 +21,16 @@ public class UsuarioVip extends Usuario {
         playlists = new ArrayList<>();
     }
 
-    public void adicionarDirectory(Directory playlist) {
-        playlists.add(playlist);
-    }
+    public void criarPlaylist (UsuarioVip usuarioVip,String playlistName, List <Musica> musicasPlaylist){
+        //CRIAR DIRETORIO E .TXT
 
-    public void removerDirectory(Directory directory) {
-        playlists.remove(directory);
+        Directory directory = new Directory();
+        directory.setBd_musicas(musicasPlaylist);
+
+        if (directory.createPathPlaylist(usuarioVip,playlistName,directory)){
+            Directory.getDaoDiretorios().salvarMemoriaPlaylist(directory);
+        }
+
     }
 
     public List<Directory> getDirectories() {

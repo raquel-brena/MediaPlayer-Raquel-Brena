@@ -3,25 +3,29 @@ package ufrn.imd.DAO;
 import ufrn.imd.entities.ArquivoUtil;
 import ufrn.imd.entities.Directory;
 import ufrn.imd.entities.Musica;
+import ufrn.imd.entities.UsuarioVip;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Classe responsável por acessar e manipular os dados dos diretórios.
  */
 public class diretoriosDAO {
-    private static final String SRC_DIRETORIOS = "src/diretorios.txt";
-    private static final String SRC_MUSICAS = "src/musicas.txt";
+    private static final String SRC_DIRETORIOS = "demo1/src/diretorios.txt";
+    private static final String SRC_MUSICAS = "demo1/src/musicas.txt";
     private static List<String> bd_dir_caminhos;
     private static List<Directory> bd_diretorios;
     private static List<Musica> bd_allMusica;
+    private static List <Directory> bd_playlists;
     private ArquivoUtil arquivo = new ArquivoUtil();
-
+    //private Map<String, Directory> diretoriosUsuario = new HashMap<>();
     /**
      * Construtor padrão.
      */
@@ -93,9 +97,10 @@ public class diretoriosDAO {
                             System.out.println("Musica: " + musica.getTitulo() + " adicionada em: " + musica.getCaminho());
                         }
                     }
-
                     // Adiciona o objeto Directory na lista bd_diretorios
                     bd_diretorios.add(diretorio);
+                } else {
+                    bd_playlists.add(diretorio);
                 }
             }
         } catch (IOException e) {
@@ -103,11 +108,13 @@ public class diretoriosDAO {
         }
     }
 
+
     /**
      * Lê os dados das músicas a partir do arquivo de texto.
      */
     public void lerArquivoMusica() {
         bd_allMusica.clear();
+
         try (BufferedReader br = new BufferedReader(new FileReader(SRC_MUSICAS))) {
             String linha;
             while ((linha = br.readLine()) != null) {
@@ -131,6 +138,54 @@ public class diretoriosDAO {
         }
     }
 
+    public void lerArquivoPlaylist() {
+        bd_playlists.clear();
+        String arquivoTXT = "src/"; // Substitua pelo caminho do diretório que você deseja pesquisar
+        File folder = new File(arquivoTXT);
+
+        File[] txt = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+
+        if (txt != null) {
+            for (File file : txt) {
+                Directory playlist = new Directory();
+                  try (BufferedReader br = new BufferedReader(new FileReader(file.getPath()))) {
+                    String linha;
+                    while ((linha = br.readLine()) != null) {
+                        String[] dadosPlaylist = linha.split(",,");
+
+                        String caminhoPlaylist = dadosPlaylist[0];
+                        File filePlaylist = new File(caminhoPlaylist);
+
+                        playlist.setCaminho(caminhoPlaylist);
+                        playlist.setFile(filePlaylist);
+                        //playlist.setBd_musicas();
+
+                        if (!caminhoPath.contains("Playlist")) {
+                            // Separando música por diretório
+                            for (Musica musica : bd_allMusica) {
+                                if (musica.getCaminho().contains(caminhoPath)) {
+                                    diretorio.adicionarMusicaObj(musica);
+                                    System.out.println("Musica: " + musica.getTitulo() + " adicionada em: " + musica.getCaminho());
+                                }
+                            }
+                            // Adiciona o objeto Directory na lista bd_diretorios
+                            bd_diretorios.add(diretorio);
+
+                        System.out.println("Música carregada! Título: " + musica.getTitulo());
+                        bd_allMusica.add(musica);
+                    }
+                }
+            } catch (IOException e) {
+                      throw new RuntimeException(e);
+                  }
+
+                System.out.println(file.getAbsolutePath());
+            }
+        }
+    }
+
+
+
     /**
      * Salva um diretório na memória do DAO.
      *
@@ -139,6 +194,10 @@ public class diretoriosDAO {
      */
     public boolean salvarMemoria(Directory diretorio) {
         bd_diretorios.add(diretorio);
+        return true;
+    }
+    public boolean salvarMemoriaPlaylist(Directory playlist) {
+        bd_playlists.add(playlist);
         return true;
     }
 
@@ -256,7 +315,59 @@ public class diretoriosDAO {
             e.printStackTrace();
         }
     }
+    public void salvarMusicasPlaylist(List <Musica> songs){
 
+    }
+    public boolean createPlaylist(UsuarioVip usuarioVIP, String nomeArquivo, List <Musica> songs) throws IOException {
+        String nomePlaylist = nomeArquivo;
+        String caminhoPath = usuarioVIP.getDirectory().getCaminho() + "/" + nomePlaylist + "Playlist";
+        String caminhoTXT = "src/playlist_" + nomePlaylist + ".txt";
+
+
+        Directory playlist = new Directory();
+
+        File diretorioPlaylist = new File(caminhoPath);
+
+        // Verificar se a pasta já existe
+        if (diretorioPlaylist.exists()) {
+            System.out.println("A playlist de músicas do usuário já existe.");
+            return false;
+        }
+
+        // Criar a pasta da playlist
+        if (diretorioPlaylist.mkdirs()) {
+            File txtPlaylist = new File(caminhoTXT);
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtPlaylist))) {
+                writer.write(usuarioVIP.getEmail() + ",," + usuarioVIP.getSenha()+",,"+nomeArquivo);
+                writer.newLine();
+
+                System.out.println("Arquivo de playlist criado com sucesso!");
+            }
+
+            playlist.setFile(diretorioPlaylist);
+            playlist.setMusicasPlaylist(songs);
+            playlist.setCaminho(caminhoPath);
+
+            // Acessar um DAO de playlist e salvar informações
+            salvarSrcDiretorio(playlist);
+            salvarMusicasPlaylist(txtPlaylist, songs);
+            bd_playlists.add(playlist);
+
+            System.out.println("Pasta de músicas da playlist criada com sucesso.");
+        } else {
+            System.out.println("Erro ao criar a pasta de músicas da playlist.");
+            return false;
+        }
+
+        return true;
+    }
+
+    public void salvarMusicasPlaylist(File txtPlaylist, List <Musica> songs){
+        for (Musica musica : songs ){
+            arquivo.escreverArquivo(txtPlaylist.getName(), musica.getTitulo()+","+musica.getArtista()+","+musica.getCaminho());
+        }
+    }
     public static List<String> getBd_dir_caminhos() {
         return bd_dir_caminhos;
     }

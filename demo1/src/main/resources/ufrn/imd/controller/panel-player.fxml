@@ -21,7 +21,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
    <children>
       <MenuBar prefHeight="27.0" prefWidth="960.0">
         <menus>
@@ -34,7 +34,7 @@
           <Menu mnemonicParsing="false" text="Player">
             <items>
               <MenuItem fx:id="mnAddMusica" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
-                  <MenuItem fx:id="mnNewPlaylist" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Nova Playlist" />
+                  <MenuItem fx:id="mnNewPlaylist" mnemonicParsing="false" onAction="#showFXMLPanelPlaylist" text="Nova Playlist" />
                   <MenuItem fx:id="mnAddMusica21" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Visualizar Playlists" />
             </items>
           </Menu>

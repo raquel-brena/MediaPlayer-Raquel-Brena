@@ -1,2 +1,2 @@
-1,nome,email,senha,false,UsuarioVip
-2,nome2,email2,senha,false,UsuarioComum
+1,gabrielson,emailgabrielson,senha,false,UsuarioComum
+2,dmed1,email,senha,false,UsuarioComum

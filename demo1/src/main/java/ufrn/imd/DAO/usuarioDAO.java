@@ -12,7 +12,7 @@ import ufrn.imd.entities.*;
 public class usuarioDAO  {
 
 
-    private static final String SRC_USUARIOS = "C:\\Users\\RB\\Desktop\\java\\mediaplyer\\demo1\\src\\usuarios.txt";
+    private static final String SRC_USUARIOS = "demo1/src/usuarios.txt";
 
     private static List<Usuario> bd_usuarios;
     private static int id = 0;

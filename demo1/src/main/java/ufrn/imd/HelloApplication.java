@@ -21,8 +21,7 @@ public class HelloApplication extends Application {
         stage = primaryStage;
 
         FXMLLoader fxmlLoaderPlaylist = new FXMLLoader(HelloApplication.class.getResource("controller/panel-playlist.fxml"));
-         playlistScene = new Scene(fxmlLoaderPlaylist.load());
-
+        playlistScene = new Scene(fxmlLoaderPlaylist.load());
 
         FXMLLoader fxmlLoaderPlayer = new FXMLLoader(HelloApplication.class.getResource("controller/panel-player.fxml"));
         playerScene = new Scene(fxmlLoaderPlayer.load());
@@ -51,7 +50,6 @@ public class HelloApplication extends Application {
                 stage.setScene(loginScene);
             }
             case "player" -> {
-
                 stage.setScene(playerScene);
                 stage.setTitle("Media Player de " + nomeUsuario);
             }
