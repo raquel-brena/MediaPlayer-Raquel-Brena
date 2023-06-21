@@ -42,13 +42,8 @@ public class Directory {
         return true;
     }
 
-    public void buscarMusicas() {
-        // Implementação da busca de músicas no diretório
-    }
-
     public boolean adicionarMusicaObj(Musica musica) {
         bd_musicas.add(musica);
-        System.out.println("Musica adicionada no diretório: " + musica.getTitulo() + "  //  " + caminho);
         return true;
     }
 
@@ -147,61 +142,13 @@ public class Directory {
     public void setMusicasPlaylist(List<Musica> musicas) {
         this.bd_musicas = musicas;
 
-        for (Musica musica : musicas) {
+        /*for (Musica musica : musicas) {
             arquivo.escreverArquivo(DAO_DIRETORIOS.getSrcMusicas(), musica.getTitulo() + ",," + musica.getArtista() + ",," + musica.getCaminho());
-        }
+        }*/
     }
 
-    public boolean createPathPlaylist(UsuarioVip usuarioVip, String playlistName, Directory playlist) {
-        String caminhoDiretorioPai = usuarioVip.getDirectory().getCaminho();
-        String caminhoPath = caminhoDiretorioPai + "/" + playlistName + "Playlist";
-        String caminhoTXT = "src/playlist_" + playlistName + ".txt";
-        File txtPlaylist = new File(caminhoTXT);
-        File filePlaylist = new File(caminhoPath);
-        playlist.setCaminho(caminhoPath);
-        playlist.setFile(filePlaylist);
 
-        if (filePlaylist.exists()) {
-            System.out.println("A pasta de músicas do usuário já existe.");
-            return false;
-        }
 
-        if (filePlaylist.mkdirs()) {
-            try {
-                if (txtPlaylist.createNewFile()) {
-                    writePlaylistToFile(txtPlaylist, caminhoPath, usuarioVip, playlistName, playlist.getAllSongs());
-                    System.out.println("Pasta de músicas do usuário criada com sucesso.");
-                } else {
-                    System.out.println("Erro ao criar o arquivo de playlist.");
-                    return false;
-                }
-            } catch (IOException e) {
-                System.out.println("Erro ao criar o arquivo de playlist: " + e.getMessage());
-                return false;
-            }
-        } else {
-            System.out.println("Erro ao criar a pasta de músicas do usuário.");
-            return false;
-        }
-
-        return true;
-    }
-
-    private void writePlaylistToFile(File txtPlaylist, String caminhoPlaylist, UsuarioVip usuarioVip, String playlistName, List<Musica> musicas) throws IOException {
-
-        FileWriter fileWriter = new FileWriter(txtPlaylist);
-        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-        bufferedWriter.write(caminhoPlaylist +",,"+usuarioVip.getNome() + ",," + playlistName);
-        bufferedWriter.newLine();
-
-        for (Musica musica : musicas) {
-            bufferedWriter.write(musica.getTitulo() + ",," + musica.getArtista() + ",," + musica.getCaminho());
-            bufferedWriter.newLine();
-        }
-        bufferedWriter.close();
-        fileWriter.close();
-    }
 
     @Override
     public String toString() {

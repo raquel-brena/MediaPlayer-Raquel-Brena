@@ -9,7 +9,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerNovaPlaylist">
    <children>
       <Label layoutX="146.0" layoutY="99.0" text="Crie uma nova Playlist!" />
-      <Button fx:id="newPlaylistButton" layoutX="422.0" layoutY="308.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="119.0" text="Criar Playlist" />
+      <Button fx:id="newPlaylistButton" layoutX="422.0" layoutY="308.0" mnemonicParsing="false" onAction="#createPlaylist" prefHeight="27.0" prefWidth="119.0" text="Criar Playlist" />
       <TextField fx:id="nomePlaylistTextField" layoutX="158.0" layoutY="132.0" />
       <Label layoutX="102.0" layoutY="136.0" text="NOME" />
       <ListView fx:id="listViewSongsPlaylist" layoutX="58.0" layoutY="169.0" prefHeight="242.0" prefWidth="307.0" />
@@ -18,5 +18,6 @@
       <Button fx:id="removeSongButton" layoutX="422.0" layoutY="263.0" mnemonicParsing="false" onAction="#removeMusicaPlaylist" prefHeight="27.0" prefWidth="118.0" text="Remover Música" />
       <Button fx:id="addSongButton" layoutX="422.0" layoutY="222.0" mnemonicParsing="false" onAction="#addMusicaPlaylist" text="Adicionar Música" />
       <Button fx:id="homeButton" layoutX="435.0" layoutY="358.0" mnemonicParsing="false" onAction="#voltar" text="Página Inicial" />
+      <Label fx:id="warningLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="213.0" layoutY="69.0" prefHeight="19.0" prefWidth="539.0" text="Mensagem" textFill="RED" visible="false" />
    </children>
 </AnchorPane>

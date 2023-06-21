@@ -2,6 +2,8 @@ package ufrn.imd.entities;
 
 import ufrn.imd.DAO.usuarioDAO;
 
+import java.util.List;
+
 public abstract class Usuario {
     private static int nextId = 1;
     private int id;
@@ -61,8 +63,8 @@ public abstract class Usuario {
     }
 
     public boolean createDirectory() {
-        directory.getDaoDiretorios().salvarMemoria(directory);
      if(directory.createPath(nome)) {
+         directory.getDaoDiretorios().salvarMemoria(directory);
          directory.getDaoDiretorios().salvarSrcDiretorio(directory);
      }
        return true;
@@ -74,7 +76,7 @@ public abstract class Usuario {
         this.isAdmin = isAdmin;
     }
 
-    public usuarioDAO getDaoUsuario() {
+    public static usuarioDAO getDaoUsuario() {
         return DAO_USUARIO;
     }
 
@@ -85,5 +87,7 @@ public abstract class Usuario {
     public void setOnline(boolean online) {
         isOnline = online;
     }
+
+
 }
 

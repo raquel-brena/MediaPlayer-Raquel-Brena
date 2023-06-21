@@ -1,2 +1,4 @@
-dsdfsf,,Artista Desconhecido,,src\main\diretorios\gabrielsonDiretorio\dsdfsf
-Ariana Grande IA - São João na Terra (Mastruz Com Leite)_qW90Q-5B7PE.mp3,,ariana,,src\main\diretorios\gabrielsonDiretorio\Ariana Grande IA - São João na Terra (Mastruz Com Leite)_qW90Q-5B7PE.mp3
+The Weeknd - Save Your Tears.mp3,,Artista Desconhecido,,src\main\diretorios\nomeDiretorio\The Weeknd - Save Your Tears.mp3
+Rema, Selena Gomez - Calm Down (Official Music Video) (128 kbps).mp3,,Artista Desconhecido,,src\main\diretorios\nomeDiretorio\Rema, Selena Gomez - Calm Down (Official Music Video) (128 kbps).mp3
+Réu Confesso - Tim Maia [lofi remix] (192  kbps).mp3,,Artista Desconhecido,,src\main\diretorios\nomeDiretorio\Réu Confesso - Tim Maia [lofi remix] (192  kbps).mp3
+Scott_Holmes_-_06_-_Clear_Progress.mp3,,Artista Desconhecido,,src\main\diretorios\nomeDiretorio\Scott_Holmes_-_06_-_Clear_Progress.mp3

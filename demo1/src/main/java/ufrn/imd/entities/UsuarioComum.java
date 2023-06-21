@@ -1,5 +1,7 @@
 package ufrn.imd.entities;
 
+import java.util.List;
+
 public class UsuarioComum extends Usuario {
     public UsuarioComum() {
         super();
@@ -8,6 +10,7 @@ public class UsuarioComum extends Usuario {
     public UsuarioComum(String nome, String email, String senha, boolean isAdmin) {
         super(nome, email, senha, isAdmin);
     }
+
 
 
     public void tornarVip() {

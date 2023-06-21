@@ -2,7 +2,9 @@ package ufrn.imd.DAO;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ufrn.imd.entities.*;
 
@@ -12,7 +14,7 @@ import ufrn.imd.entities.*;
 public class usuarioDAO  {
 
 
-    private static final String SRC_USUARIOS = "demo1/src/usuarios.txt";
+    private static final String SRC_USUARIOS = "src/usuarios.txt";
 
     private static List<Usuario> bd_usuarios;
     private static int id = 0;
@@ -31,28 +33,27 @@ public class usuarioDAO  {
      */
     public void lerArquivoUsuario() {
         bd_usuarios.clear();
+        //adiciondo diretorio ao usuário.
+        Directory directory = new Directory();
+        directory.getDaoDiretorios().lerArquivoDiretorio();
+        Playlist.getDaoPlaylist().lerArquivoPlaylist();
 
         try (BufferedReader br = new BufferedReader(new FileReader(SRC_USUARIOS))) {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dadosUsuario = linha.split(",");
-                Usuario usuario;
-                if (dadosUsuario[5].equals("Usuario Comum")){
-                    usuario = new UsuarioComum(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
-                usuario.setId(Integer.parseInt(dadosUsuario[0]));
-                } else {
-                    usuario = new UsuarioVip(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
-                    usuario.setId(Integer.parseInt(dadosUsuario[0]));
-                }
-                //adiciondo diretorio ao usuário.
-                Directory directory = new Directory();
-                directory.getDaoDiretorios().lerArquivoDiretorio();
-                for (Directory direcAux: directory.getDaoDiretorios().getBd_diretorios()){
-                    if (direcAux.getCaminho().contains(usuario.getNome())){
+
+                Usuario usuario = criarUsuario(dadosUsuario);
+
+                for (Directory direcAux : directory.getDaoDiretorios().getBd_diretorios()) {
+                    System.out.println(direcAux.getCaminho() + " - " + usuario.getNome());
+                    if (direcAux.getCaminho().contains(usuario.getNome())) {
                         usuario.setDirectory(direcAux);
+                        System.out.println("Diretorio setado no usuario" + direcAux.getCaminho());
                     }
                 }
 
+                System.out.println(usuario.getId());
                 bd_usuarios.add(usuario);
             }
         } catch (IOException e) {
@@ -61,6 +62,34 @@ public class usuarioDAO  {
         }
     }
 
+
+    private Usuario criarUsuario(String[] dadosUsuario) {
+        Usuario usuario;
+        boolean isVip;
+        if (dadosUsuario[5].equals("UsuarioVip")){
+            isVip = true;
+        } else {
+            isVip = false;
+        }
+
+        if (isVip) {
+            usuario = new UsuarioVip(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
+        } else {
+            usuario = new UsuarioComum(dadosUsuario[1],dadosUsuario[2],dadosUsuario[3],Boolean.parseBoolean(dadosUsuario[4]));
+        }
+
+        usuario.setId(Integer.parseInt(dadosUsuario[0]));
+
+        if (isVip) {
+           //Playlist playlistsUsuario = diretoriosDAO.getBd_playlists().get(usuario.getId());
+
+            List <Playlist> playlistsUsuario = playlistDAO.getBd_playlists().get(usuario.getId());
+            if (playlistsUsuario!= null){
+                ((UsuarioVip) usuario).setPlaylists(playlistsUsuario);
+            }
+        }
+        return usuario;
+    }
     /**
      * Salva a lista de usuários no arquivo de texto.
      *
@@ -174,12 +203,14 @@ public class usuarioDAO  {
     }
 
 
-    public Usuario updateVIP(Usuario usuarioOnline) {
-
+    public UsuarioVip updateVIP(UsuarioComum usuarioOnline) {
             System.out.println("instancia ok ");
-            Usuario usuarioVIP = new UsuarioVip();
+            UsuarioVip usuarioVIP = new UsuarioVip();
+
             for (int i = 0; i < bd_usuarios.size(); i++) {
                 Usuario usuario = bd_usuarios.get(i);
+                System.out.println("id buscador" + usuario.getId());
+                System.out.println("id online" + usuarioOnline.getId());
                 if (usuarioOnline.getId() == usuario.getId()) {
                     System.out.println("encontrado ok ");
                     // Atualizar informações do usuário para VIP
@@ -190,20 +221,17 @@ public class usuarioDAO  {
                     usuarioVIP.setAdmin(usuario.isAdmin());
                     usuarioVIP.setDirectory(usuario.getDirectory());
 
-
                     // Substituir usuário comum pelo usuário VIP na lista
                     bd_usuarios.set(i, usuarioVIP);
-                    break;
+                    atualizarArquivo(bd_usuarios);
+                    System.out.println("Usuário atualizado para VIP com sucesso.");
+
                 }
-
-
-
             // Atualizar arquivo de texto
-            atualizarArquivo(bd_usuarios);
-            System.out.println("Usuário atualizado para VIP com sucesso.");
-            return usuarioVIP;
+                System.out.println("updateVIP: "+usuarioVIP.getNome());
+                return usuarioVIP;
         }
-        return null;
+        return usuarioVIP;
     }
 
 

@@ -28,85 +28,96 @@ public class ControllerNovaPlaylist {
     private Button homeButton;
 
     @FXML
+    private Label warningLabel;
+
+    @FXML
     private ListView<Musica> listViewSongsPlaylist;
     @FXML
     private ListView<Musica> listViewSongsDiretorio;
 
     private ObservableList<Musica> MusicaObservableListPlaylist;
     private ObservableList<Musica> MusicaObservableListDiretorio;
-    private UsuarioVip usuarioVIP;
+    private Usuario usuarioVIP =  new UsuarioVip();
     private List<Musica> SONGS_ONLINE_DIRETORIO;
     private List<Musica> SONGS_PLAYLIST;
+
+    private boolean buttonConfirmar = false;
     private Directory playlist;
 
     public ControllerNovaPlaylist() {
-        usuarioVIP = new UsuarioVip();
         SONGS_ONLINE_DIRETORIO = new ArrayList<>();
         SONGS_PLAYLIST = new ArrayList<>();
         playlist = new Directory();
         MusicaObservableListPlaylist = FXCollections.observableArrayList();
         MusicaObservableListDiretorio = FXCollections.observableArrayList();
     }
-    public void setUsuarioOnline(UsuarioVip usuarioOnline) {
+
+    @FXML
+    public void createPlaylist() throws IOException {
+        if (nomePlaylistTextField.getText() == ""){
+            warningLabel.setVisible(true);
+            warningLabel.setText("É obrigatório adicionar um nome para a sua playlist");
+        } else {
+            if (usuarioVIP instanceof UsuarioVip) {
+                UsuarioVip usuarioVipCasting = (UsuarioVip) usuarioVIP;
+                usuarioVipCasting.criarPlaylist((UsuarioVip) usuarioVIP, nomePlaylistTextField.getText(), SONGS_PLAYLIST);
+            }
+           // this.buttonConfirmar = true;
+            voltar();
+        }
+    }
+
+    public void limparTela(){
+        MusicaObservableListPlaylist.clear();
+        MusicaObservableListDiretorio.clear();
+        nomePlaylistTextField.clear();
+        SONGS_PLAYLIST.clear();
+    }
+
+    public void setUsuarioOnline(Usuario usuarioOnline) {
         this.usuarioVIP = usuarioOnline;
         SONGS_ONLINE_DIRETORIO = usuarioOnline.getDirectory().getAllSongs();
         exibirMusicasDiretorio();
     }
 
     public void addMusicaPlaylist() throws IOException {
+        warningLabel.setVisible(false);
         Musica musicaSelecionada = listViewSongsDiretorio.getSelectionModel().getSelectedItem();
-        if (musicaSelecionada != null) {
-            MusicaObservableListPlaylist.add(musicaSelecionada);
-            SONGS_PLAYLIST.add(musicaSelecionada);
-            listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
-            listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
-                @Override
-                protected void updateItem(Musica musica, boolean empty) {
-                    super.updateItem(musica, empty);
+        if (musicaSelecionada != null ) {
+            if (!SONGS_PLAYLIST.contains(musicaSelecionada)) {
+                MusicaObservableListPlaylist.add(musicaSelecionada);
+                SONGS_PLAYLIST.add(musicaSelecionada);
+                listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
+                listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
+                    @Override
+                    protected void updateItem(Musica musica, boolean empty) {
+                        super.updateItem(musica, empty);
 
-                    if (empty || musica == null) {
-                        setText(null);
-                    } else {
-                        setText(musica.getTitulo() + " - " + musica.getArtista());
+                        if (empty || musica == null) {
+                            setText(null);
+                        } else {
+                            setText(musica.getTitulo() + " - " + musica.getArtista());
+                        }
                     }
-                }
-            });
+                });
 
-           /* try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtPlaylist))) {
-                writer.write(musicaSelecionada.getTitulo()+","+musicaSelecionada.getCaminho()+","+musicaSelecionada.getArtista());
-                writer.newLine();
-        }*/
+            } else {
+                warningLabel.setText("A música selecionada já está na playlist!");
+            }
         }
     }
 
-    /**
-     * Cria uma PASTA e uma arquivo .txt para guardar informações da playlist do usuario.
-     * @return
-     * @throws IOException
-     */
+    public boolean isButtonConfirmar() {
+        return buttonConfirmar;
+    }
 
-
-
-    @FXML
-    public void createPlaylist() throws IOException {
-        usuarioVIP.criarPlaylist(usuarioVIP,nomePlaylistTextField.getText(),SONGS_PLAYLIST);
-       /**
-
-        //ControllerNovaPlaylist >> UsuarioVIP >> Directory >> DAO
-        Directory playlist = new Directory();
-        playlist.setBd_musicas(SONGS_PLAYLIST);
-        playlist.setCaminho(caminhoPath);
-        playlist.setFile();
-
-
-        Directory.getDaoDiretorios().salvarMusicasPlaylist(SONGS_PLAYLIST);
-        Directory.getDaoDiretorios().createPlaylist((UsuarioVip) usuarioVIP, nomePlaylist, SONGS_PLAYLIST);
-    */}
-
-
+    public void setButtonConfirmar(boolean buttonConfirmar) {
+        this.buttonConfirmar = buttonConfirmar;
+    }
 
     @FXML
     public void removeMusicaPlaylist() {
+        warningLabel.setVisible(false);
         Musica musicaSelecionada = listViewSongsPlaylist.getSelectionModel().getSelectedItem();
         if (musicaSelecionada != null) {
             MusicaObservableListPlaylist.remove(musicaSelecionada);
@@ -116,8 +127,9 @@ public class ControllerNovaPlaylist {
 
     @FXML
     public void voltar (){
-        Alert alert = new Alert(Alert.AlertType.WARNING, "Dados de playlist perdidos");
+        warningLabel.setVisible(false);
         HelloApplication.changeScreen("player",usuarioVIP.getNome());
+        limparTela();
     }
 
 

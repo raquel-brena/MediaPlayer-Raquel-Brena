@@ -1,2 +1,1 @@
-src\main\diretorios\gabrielsonDiretorio
-src\main\diretorios\dmed1Diretorio
+src\main\diretorios\nomeDiretorio

@@ -30,8 +30,8 @@ public class ControllerVIP implements Initializable {
 
     private boolean buttonConfirmar;
 
-    Usuario usuarioVIP = new UsuarioVip();
-    Usuario usuarioComum = new UsuarioComum();
+    UsuarioVip usuarioVIP;
+    UsuarioComum usuarioComum;
     private Stage dialogStage;
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
@@ -49,9 +49,9 @@ public class ControllerVIP implements Initializable {
 
     @FXML
     public void comprarVIP(){
-
-       this.usuarioVIP = usuarioVIP.getDaoUsuario().updateVIP(usuarioComum);
-
+        //usuarioVIP = new UsuarioVip();
+       this.usuarioVIP = Usuario.getDaoUsuario().updateVIP((UsuarioComum) getUsuarioComum());
+        System.out.println("comprarVIP: "+usuarioVIP.getNome());
 
         this.buttonConfirmar = true;
         msgSucessoLabel.setVisible(true);
@@ -74,18 +74,12 @@ public class ControllerVIP implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-
-    public void setUsuarioComum(Usuario usuarioOnline) {
-
+    public void setUsuarioComum(UsuarioComum usuarioOnline) {
         this.usuarioComum = usuarioOnline;
     }
 
     public Usuario getUsuarioVIP() {
-        return usuarioVIP;
-    }
-
-    public void setUsuarioVIP(Usuario usuarioVIP) {
-        this.usuarioVIP = usuarioVIP;
+        return this.usuarioVIP;
     }
 
     public Usuario getUsuarioComum() {

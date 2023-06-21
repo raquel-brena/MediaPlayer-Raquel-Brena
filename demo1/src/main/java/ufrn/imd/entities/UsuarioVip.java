@@ -4,16 +4,16 @@ package ufrn.imd.entities;
 import ufrn.imd.DAO.diretoriosDAO;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class UsuarioVip extends Usuario {
-    private List<Directory> playlists;
-
+    private List<Playlist> playlists;
 
     public UsuarioVip() {
-        this.playlists = playlists;
+        playlists = new ArrayList<>();
     }
 
     public UsuarioVip(String nome, String email, String senha, boolean isAdmin) {
@@ -21,19 +21,24 @@ public class UsuarioVip extends Usuario {
         playlists = new ArrayList<>();
     }
 
-    public void criarPlaylist (UsuarioVip usuarioVip,String playlistName, List <Musica> musicasPlaylist){
-        //CRIAR DIRETORIO E .TXT
+    public void criarPlaylist (UsuarioVip usuarioVip,String playlistName, List <Musica> musicasPlaylist) throws IOException {
+        Playlist playlist = new Playlist();
 
-        Directory directory = new Directory();
-        directory.setBd_musicas(musicasPlaylist);
+        playlist.setBd_musicasPlay(musicasPlaylist);
+        playlist.setNome(playlistName);
 
-        if (directory.createPathPlaylist(usuarioVip,playlistName,directory)){
-            Directory.getDaoDiretorios().salvarMemoriaPlaylist(directory);
-        }
-
+        Playlist.getDaoPlaylist().salvarMemoriaPlaylist(getId(), playlist);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlist);
     }
 
-    public List<Directory> getDirectories() {
+    public List<Playlist> getPlaylists() {
         return playlists;
     }
+
+    public void setPlaylists(List<Playlist> playlists) {
+        this.playlists = playlists;
+    }
 }
+
+
+

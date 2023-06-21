@@ -19,7 +19,7 @@
                </font>
             </Label>
             <Text fx:id="textFieldMusicaCaminho" layoutX="134.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="191.9814453125" />
-            <Button fx:id="virarVIPButton" layoutX="62.0" layoutY="141.0" mnemonicParsing="false" onAction="#comprarVIP" onMouseClicked="#comprarVIP" prefHeight="27.0" prefWidth="239.0" text="Comprar VIP" />
+            <Button fx:id="virarVIPButton" layoutX="62.0" layoutY="141.0" mnemonicParsing="false" onAction="#comprarVIP" prefHeight="27.0" prefWidth="239.0" text="Comprar VIP" />
             <Button fx:id="cancelarButton" layoutX="309.0" layoutY="142.0" mnemonicParsing="false" onAction="#handleButtonCancelar" prefHeight="25.0" prefWidth="118.0" text="Cancelar" />
             <Label layoutX="182.0" layoutY="95.0" prefHeight="25.0" prefWidth="76.0" text="Valor do VIP:" textAlignment="RIGHT" />
             <Label fx:id="valorVIP" layoutX="277.0" layoutY="99.0" text="Valor" textAlignment="RIGHT" />
