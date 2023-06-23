@@ -12,10 +12,7 @@ import ufrn.imd.entities.*;
  * Classe responsável pela persistência dos dados dos usuários em um arquivo de texto.
  */
 public class usuarioDAO  {
-
-
     private static final String SRC_USUARIOS = "src/usuarios.txt";
-
     private static List<Usuario> bd_usuarios;
     private static int id = 0;
     private ArquivoUtil arquivo = new ArquivoUtil();
@@ -211,6 +208,7 @@ public class usuarioDAO  {
                 Usuario usuario = bd_usuarios.get(i);
                 System.out.println("id buscador" + usuario.getId());
                 System.out.println("id online" + usuarioOnline.getId());
+
                 if (usuarioOnline.getId() == usuario.getId()) {
                     System.out.println("encontrado ok ");
                     // Atualizar informações do usuário para VIP
@@ -225,11 +223,12 @@ public class usuarioDAO  {
                     bd_usuarios.set(i, usuarioVIP);
                     atualizarArquivo(bd_usuarios);
                     System.out.println("Usuário atualizado para VIP com sucesso.");
-
                 }
-            // Atualizar arquivo de texto
-                System.out.println("updateVIP: "+usuarioVIP.getNome());
-                return usuarioVIP;
+
+        }
+        // Atualizar arquivo de texto
+        if (usuarioVIP instanceof UsuarioVip){
+            System.out.println("updateVIP: " + usuarioVIP.getNome());
         }
         return usuarioVIP;
     }

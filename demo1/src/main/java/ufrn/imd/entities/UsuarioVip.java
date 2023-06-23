@@ -21,7 +21,7 @@ public class UsuarioVip extends Usuario {
         playlists = new ArrayList<>();
     }
 
-    public void criarPlaylist (UsuarioVip usuarioVip,String playlistName, List <Musica> musicasPlaylist) throws IOException {
+    public void criarPlaylist (String playlistName, List <Musica> musicasPlaylist) throws IOException {
         Playlist playlist = new Playlist();
 
         playlist.setBd_musicasPlay(musicasPlaylist);
@@ -29,6 +29,11 @@ public class UsuarioVip extends Usuario {
 
         Playlist.getDaoPlaylist().salvarMemoriaPlaylist(getId(), playlist);
         Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlist);
+    }
+
+    public void excluirPlaylist(Playlist playlistSelecionada){
+        File folder = new File("src/playlists/playlist_" + playlistSelecionada.getNome()+".txt");
+        folder.delete();
     }
 
     public List<Playlist> getPlaylists() {

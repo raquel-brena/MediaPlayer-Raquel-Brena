@@ -1,9 +1,7 @@
 package ufrn.imd.controller;
 
-import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
 import ufrn.imd.HelloApplication;
 import ufrn.imd.entities.*;
 import javafx.collections.ObservableList;
@@ -18,6 +16,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -25,24 +24,12 @@ import java.util.*;
 /**
  * Controlador para a tela do player.
  */
-public class ControllerPlayer {
+public class ControllerPlayer  {
 
     @FXML
     private ToggleButton playButton;
     @FXML
     private ToggleButton diretorioButton;
-
-    @FXML
-    private Button stopButton;
-
-    @FXML
-    private Button pauseButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Button previousButton;
 
     @FXML
     private Slider volumeSlider;
@@ -52,6 +39,8 @@ public class ControllerPlayer {
 
     @FXML
     private Label nameMusicLabel;
+
+    @FXML Label durationSong;
 
     @FXML
     private ImageView userImage;
@@ -75,23 +64,15 @@ public class ControllerPlayer {
     @FXML
     private MenuItem mnNewPlaylist;
 
-    @FXML
-    private Button newPlaylistButton;
+
 
     @FXML
     private ListView<Musica> listViewMusicas;
     @FXML
     private ListView<Playlist> listViewPlaylist;
-
     private Stage dialogStage;
-
-    private File directory;
-    private File[] files;
-    private List<File> fileSongs;
     private List<Musica> SONGS_ONLINE;
-    private List<File> SONGS_FILE_ONLINE;
     private List<Playlist> PLAYLISTS_ONLINE;
-
     private Timer timer;
     private TimerTask task;
     private boolean running;
@@ -101,28 +82,33 @@ public class ControllerPlayer {
     private ObservableList<Musica> MusicaObservableList;
     private ObservableList<Playlist> PlaylistObservableList;
     private ControllerNovaPlaylist controllerNovaPlaylist;
-    private List<File> filaReproducao;
+    private List<Musica> filaReproducao;
     private int songNumber;
-
+    private ControllerNovaPlaylist controllerPlaylist;
 
     /**
      * Construtor padrão.
      */
     public ControllerPlayer() {
+
+
+    }
+    public void inicializar(){
         USUARIO_ONLINE = new UsuarioComum();
         SONGS_ONLINE = new ArrayList<>();
         filaReproducao = new ArrayList<>();
         PlaylistObservableList = FXCollections.observableArrayList();
         MusicaObservableList = FXCollections.observableArrayList();
     }
-
     /**
      * Define o usuário online.
      *
      * @param usuario O usuário online.
      */
     public void setUsuarioOnline(Usuario usuario) {
+        inicializar();
         nameDiretorio.setText("DIRETÓRIO");
+
 
         this.USUARIO_ONLINE = usuario;
         this.SONGS_ONLINE = USUARIO_ONLINE.getDirectory().getAllSongs();
@@ -131,14 +117,10 @@ public class ControllerPlayer {
         for (Musica musica: SONGS_ONLINE){
             System.out.print("musica: " + musica.getTitulo());
         }
-
         if (USUARIO_ONLINE instanceof UsuarioVip){
-
             PLAYLISTS_ONLINE = ((UsuarioVip) usuario).getPlaylists();
-
             vipStatusLabel.setText("VIP ATIVO");
             mnNewPlaylist.setDisable(false);
-
             atualizarListaPlaylist();
         } else {
             vipStatusLabel.setText("VIP INATIVO");
@@ -148,79 +130,114 @@ public class ControllerPlayer {
         Image image = new Image("C:\\Users\\RB\\Desktop\\java\\mediaplyer\\demo1\\src\\main\\java\\ufrn\\imd\\extra\\png-user.png");
         userImage.setImage(image);
 
+        volumeSlider.setValue(100);
         atualizarListaMusica(SONGS_ONLINE);
+        songProgressBar.setStyle("-fx-accent: #00FF00;");
+    }
+
+
+    @FXML
+    public void removeButton() {
+        //warningLabel.setVisible(false);
+
+        Musica musicaSelecionada = listViewMusicas.getSelectionModel().getSelectedItem();
+        Playlist playlistSelecionada = listViewPlaylist.getSelectionModel().getSelectedItem();
+
+        if (musicaSelecionada != null) {
+            //if (musicaSelecionada.getFile() == mediaPlayer.getOnPlaying()){
+           //     mediaPlayer.stop();
+           // }
+            USUARIO_ONLINE.getDirectory().excluirMusica(musicaSelecionada);
+            SONGS_ONLINE = USUARIO_ONLINE.getDirectory().getAllSongs();
+            atualizarListaMusica(SONGS_ONLINE);
+
+        } else if (playlistSelecionada != null){
+            //PlaylistObservableList.remove(playlistSelecionada);
+            ((UsuarioVip)USUARIO_ONLINE).excluirPlaylist(playlistSelecionada);
+            PLAYLISTS_ONLINE.remove(playlistSelecionada);
+
+            exibirPlaylist();
+        }
+
+    }
+
+
+    @FXML
+    public void volume() {
+        mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+    }
+
+    @FXML
+    public void dragProgressBar() {
+        songProgressBar.setOnMouseDragged(event -> {
+            double progress = event.getX() / songProgressBar.getWidth();
+            mediaPlayer.seek(mediaPlayer.getTotalDuration().multiply(progress));
+            //double tempoAtual = mediaPlayer.getCurrentTime().toMinutes()-mediaPlayer.getTotalDuration().multiply(progress).toMinutes();
+            //durationSong.setText(String.valueOf(tempoAtual));
+        });
+    }
+
+    public void playSong (int number) {
+        if (mediaPlayer != null) {mediaPlayer.stop();}
+            this.media = new Media(filaReproducao.get(number).getFile().toURI().toString());
+            this.mediaPlayer = new MediaPlayer(media);
+            this.mediaPlayer.play();
+            volume();
+            beginTimer();
+            nameMusicLabel.setText(filaReproducao.get(number).getTitulo() + " - " + filaReproducao.get(number).getArtista());
+            listViewMusicas.getSelectionModel().select(number);
+
+            //double tempoAtual = mediaPlayer.getTotalDuration().toMinutes()-mediaPlayer.getCurrentTime().toMinutes();
+            //durationSong.setText(String.valueOf(tempoAtual));
+
     }
 
     @FXML
     public void play() {
         Musica musicaSelecionada = listViewMusicas.getSelectionModel().getSelectedItem();
-
         if (playButton.isSelected()) {
             if (musicaSelecionada != null) {
                 int numberMusica = listViewMusicas.getSelectionModel().getSelectedIndex();
                 playSong(numberMusica);
-                nameMusicLabel.setText(musicaSelecionada.getTitulo() + " - " + musicaSelecionada.getArtista());
             } else {
                 playSong(songNumber);
-                nameMusicLabel.setText(musicaSelecionada.getTitulo() + " - " + musicaSelecionada.getArtista());
             }
-        } else {
-            mediaPlayer.pause();
+        }
+        if(mediaPlayer!=null) {
+            if (!playButton.isSelected()) {
+                mediaPlayer.pause();
+            }
         }
     }
 
     public void cancelTimer() {
-
         running = false;
         timer.cancel();
     }
 
-
-    public void playMedia() {
-
-        beginTimer();
-        changeSpeed(null);
-        mediaPlayer.setVolume(volumeSlider.getValue() * 0.01);
-        mediaPlayer.play();
-    }
-
-    public void changeSpeed(ActionEvent event) {
+    public void beginTimer() {
         if (mediaPlayer != null) {
-            Double volumeValue = volumeSlider.getValue();
-            if (volumeValue != null) {
-                mediaPlayer.setRate(volumeValue * 0.01);
-            } else {
-                mediaPlayer.setRate(1);
-            }
+            timer = new Timer();
+            task = new TimerTask() {
+
+                public void run() {
+                    running = true;
+                    double current = mediaPlayer.getCurrentTime().toSeconds();
+                    double end = media.getDuration().toSeconds();
+                    songProgressBar.setProgress(current / end);
+
+                    if (current / end == 1) {
+                        cancelTimer();
+                    }
+                }
+            };
+            timer.scheduleAtFixedRate(task, 1000, 1000);
         }
     }
 
-    public void beginTimer() {
-
-        timer = new Timer();
-
-        task = new TimerTask() {
-
-            public void run() {
-
-                running = true;
-                double current = mediaPlayer.getCurrentTime().toSeconds();
-                double end = media.getDuration().toSeconds();
-                songProgressBar.setProgress(current/end);
-
-                if(current/end == 1) {
-
-                    cancelTimer();
-                }
-            }
-        };
-
-        timer.scheduleAtFixedRate(task, 0, 1000);
-    }
 
     @FXML
     public void nextMedia() {
-
         if(songNumber < filaReproducao.size() - 1) {
             songNumber++;
             mediaPlayer.stop();
@@ -228,6 +245,7 @@ public class ControllerPlayer {
                 cancelTimer();
             }
             playSong(songNumber);
+
         }
         else {
             songNumber = 0;
@@ -236,47 +254,57 @@ public class ControllerPlayer {
         }
     }
 
-public void playSong (int number){
-    this.media = new Media(filaReproducao.get(number).toURI().toString());
-    this.mediaPlayer = new MediaPlayer(media);
-    this.mediaPlayer.play();
-}
     @FXML
-    public void logout (){
-        HelloApplication.changeScreen("login","");
-        this.USUARIO_ONLINE = null;
-        //this.dialogStage.close();
+    public void previousMedia() {
 
+        if(songNumber>0) {
+            songNumber--;
+            mediaPlayer.stop();
+            if(running) {cancelTimer();}
+            mediaPlayer.stop();
+            playSong(songNumber);
+        }
     }
+
+
     /**
      * Atualiza a lista de música da tela
      *
      */
     @FXML
-    public void atualizarListaMusica(List <Musica> SONGS){
-        for (Musica musica : SONGS){
-            filaReproducao.add(musica.getFile());
-        }
-
-        MusicaObservableList = FXCollections.observableArrayList();
-
-        for (Musica musica : SONGS) {
-            MusicaObservableList.add(musica);
-        }
-        listViewMusicas.setItems(MusicaObservableList);
-
-        listViewMusicas.setCellFactory(param -> new ListCell<Musica>() {
-            @Override
-            protected void updateItem(Musica musica, boolean empty) {
-                super.updateItem(musica, empty);
-
-                if (empty || musica == null) {
-                    setText(null);
-                } else {
-                    setText(musica.getTitulo() + " - " + musica.getArtista());
-                }
+    public void atualizarListaMusica(List <Musica> SONGS) {
+        if (SONGS != null) {
+            for (Musica musica : SONGS) {
+                filaReproducao.add(musica);
             }
-        });
+            MusicaObservableList = FXCollections.observableArrayList();
+            for (Musica musica : SONGS) {
+                MusicaObservableList.add(musica);
+            }
+
+            listViewMusicas.setItems(MusicaObservableList);
+
+            listViewMusicas.setCellFactory(param -> new ListCell<>() {
+                @Override
+                protected void updateItem(Musica musica, boolean empty) {
+                    super.updateItem(musica, empty);
+
+                    if (empty || musica == null) {
+                        setText(null);
+                        setStyle(""); // Limpa o estilo da célula
+                    } else {
+                        setText(musica.getTitulo() + " - " + musica.getArtista());
+
+                        // Verifica se a música está selecionada
+                        if (listViewMusicas.getSelectionModel().getSelectedItem() == musica) {
+                            setStyle("-fx-background-color: lightblue;"); // Define o estilo da célula selecionada
+                        } else {
+                            setStyle(""); // Limpa o estilo da célula não selecionada
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @FXML
@@ -286,45 +314,48 @@ public void playSong (int number){
             atualizarListaMusica(SONGS_ONLINE);
         } else {
             exibirPlaylist();
-
         }
     }
-
 
     @FXML
     public void exibirPlaylist(){
         Playlist playlistSelecionada = listViewPlaylist.getSelectionModel().getSelectedItem();
-        atualizarListaMusica(playlistSelecionada.getBd_musicasPlay());
-        nameDiretorio.setText(playlistSelecionada.getNome());
+        if (playlistSelecionada!=null) {
+            atualizarListaMusica(playlistSelecionada.getBd_musicasPlay());
+            nameDiretorio.setText(playlistSelecionada.getNome());
+            diretorioButton.setSelected(false);
+        }
     }
 
     public void atualizarListaPlaylist() {
-        PlaylistObservableList = FXCollections.observableArrayList();
+        //if ()
+        PLAYLISTS_ONLINE = (((UsuarioVip) USUARIO_ONLINE).getPlaylists());
+        PlaylistObservableList= FXCollections.observableArrayList();
 
         if (PLAYLISTS_ONLINE != null) {
-            for (Playlist play : PLAYLISTS_ONLINE) {
-                PlaylistObservableList.add(play);
+            for (Playlist playlist : PLAYLISTS_ONLINE) {
+                System.out.println(playlist.getNome());
+                PlaylistObservableList.add(playlist);
             }
-
+        }
             listViewPlaylist.setItems(PlaylistObservableList);
 
-            listViewPlaylist.setCellFactory(param -> new ListCell<Playlist>() {
+            listViewPlaylist.setCellFactory(param -> new ListCell<>() {
+                int id = 0;
 
                 @Override
                 protected void updateItem(Playlist playlist, boolean empty) {
-                    int id = 0;
                     super.updateItem(playlist, empty);
-                    id++;
                     if (empty || playlist == null) {
                         setText(null);
                     } else {
-                        setText(" - " + playlist.getNome());
-
+                        setText(playlist.getNome());
                     }
                 }
             });
         }
-    }
+
+
 
     /**
      * Exibe o painel de adição de nova música.
@@ -364,17 +395,41 @@ public void playSong (int number){
         }
     }
 
-    @FXML
+    /*@FXML
     public void showFXMLPanelPlaylist(){
         HelloApplication.changeScreen("playlist",USUARIO_ONLINE.getNome());
         controllerNovaPlaylist.setUsuarioOnline(USUARIO_ONLINE);
-
-        if (controllerNovaPlaylist.isButtonConfirmar()) {
-            System.out.println("botao apertado");
-            atualizarListaPlaylist();
-        }
-        controllerNovaPlaylist.setButtonConfirmar(false);
+        atualizarListaPlaylist();
     }
+*/
+    @FXML
+    public void showFXMLPanelPlaylist() {
+        HelloApplication.changeScreen("playlist", USUARIO_ONLINE.getNome());
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(ControllerNovaPlaylist.class.getResource("panel-nova-playlist.fxml"));
+
+        try {
+            AnchorPane novaPlaylist = loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Criar Nova Playlist");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+
+            Scene scene = new Scene(novaPlaylist);
+            dialogStage.setScene(scene);
+
+            controllerNovaPlaylist = loader.getController();
+            controllerNovaPlaylist.setDialogStage(dialogStage);
+            controllerNovaPlaylist.setControllerPlayer(this);
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        atualizarListaPlaylist();
+    }
+
+
 
     /**
      * Converte o usuário comum em usuário VIP.
@@ -386,7 +441,7 @@ public void playSong (int number){
     public void setMnVirarVIP() {
         if (USUARIO_ONLINE instanceof UsuarioVip) {
            System.out.println("usuario ja é vip");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Usuario já possui cadastro VIP");
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Usuario já possui cadastro VIP");
         } else {
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -422,8 +477,6 @@ public void playSong (int number){
         }
     }
 
-
-
     /**
      * Define o estágio de diálogo.
      *
@@ -433,7 +486,27 @@ public void playSong (int number){
         this.dialogStage = dialogStage;
     }
 
+    @FXML
+    public void logout (){
+        HelloApplication.changeScreen("login","");
+        this.USUARIO_ONLINE = null;
+        this.media=null;
+        this.filaReproducao =null;
+        if(mediaPlayer!=null){
+        mediaPlayer.stop();
+        mediaPlayer.dispose();}
+        mediaPlayer = null;
+        if (timer != null) {
+            cancelTimer();
+            timer = null;
+        }
+
+        //this.dialogStage.close();
+
+    }
+
     public void setControllerPlaylist(ControllerNovaPlaylist controllerNovaPlaylist) {
-        this.controllerNovaPlaylist = controllerNovaPlaylist;
+
+    this.controllerNovaPlaylist = controllerNovaPlaylist;
     }
 }

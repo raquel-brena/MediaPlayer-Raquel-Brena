@@ -66,21 +66,10 @@ public class Directory {
 
     public boolean excluirMusica(Musica musica) {
         bd_musicas.remove(musica);
-        atualizarArquivoMusica(bd_musicas);
+        getDaoDiretorios().removerMusicadoTXT(musica.getCaminho());
         return true;
     }
 
-    public void atualizarArquivoMusica(List<Musica> musicas) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(DAO_DIRETORIOS.getSrcMusicas(), false))) {
-            for (Musica musica : musicas) {
-                String linha = musica.getTitulo() + ",," + musica.getArtista();
-                bw.write(linha);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public List<Musica> getMusicaList() {
         return bd_musicas;

@@ -50,11 +50,14 @@ public class ControllerVIP implements Initializable {
     @FXML
     public void comprarVIP(){
         //usuarioVIP = new UsuarioVip();
+
        this.usuarioVIP = Usuario.getDaoUsuario().updateVIP((UsuarioComum) getUsuarioComum());
         System.out.println("comprarVIP: "+usuarioVIP.getNome());
 
-        this.buttonConfirmar = true;
-        msgSucessoLabel.setVisible(true);
+        if (usuarioVIP != null) {
+            this.buttonConfirmar = true;
+            msgSucessoLabel.setVisible(true);
+        }
     }
 
     @FXML

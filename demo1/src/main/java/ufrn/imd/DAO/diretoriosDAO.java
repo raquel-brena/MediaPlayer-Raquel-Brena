@@ -20,7 +20,6 @@ public class diretoriosDAO {
     private static List<String> bd_dir_caminhos;
     private static List<Directory> bd_diretorios;
     private static List<Musica> bd_allMusica;
-    private static Map<Integer, List <List<Musica>>> bd_playlists;
     private ArquivoUtil arquivo = new ArquivoUtil();
 
     /**
@@ -30,43 +29,6 @@ public class diretoriosDAO {
         bd_dir_caminhos = new ArrayList<>();
         bd_diretorios = new ArrayList<>();
         bd_allMusica = new ArrayList<>();
-        bd_playlists = new HashMap<>();
-    }
-
-
-    /**
-     * Busca um diretório pelo nome do autor.
-     *
-     * @param autor O nome do autor do diretório.
-     * @return O objeto Directory correspondente ao diretório encontrado, ou null se não for encontrado.
-     */
-    public Directory buscarDiretorio(String autor) {
-        for (Directory diretorio : bd_diretorios) {
-            String caminho = diretorio.getCaminho();
-            if (caminho.contains(autor)) {
-                return diretorio;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Busca as músicas de um diretório específico.
-     *
-     * @param caminhoDiretorio O caminho do diretório.
-     * @return A lista de músicas do diretório.
-     */
-    public List<Musica> buscarMusicas(String caminhoDiretorio) {
-        List<Musica> musicasDiretorio = new ArrayList<>();
-        lerArquivoDiretorio();
-
-        for (Musica musica : bd_allMusica) {
-            String caminhoMusica = musica.getCaminho();
-            if (caminhoMusica.contains(caminhoDiretorio)) {
-                musicasDiretorio.add(musica);
-            }
-        }
-        return musicasDiretorio;
     }
 
     /**
@@ -102,8 +64,6 @@ public class diretoriosDAO {
             e.printStackTrace();
         }
     }
-
-
     /**
      * Lê os dados das músicas a partir do arquivo de texto.
      */
@@ -133,8 +93,6 @@ public class diretoriosDAO {
         }
     }
 
-
-
     /**
      * Salva um diretório na memória do DAO.
      *
@@ -157,6 +115,20 @@ public class diretoriosDAO {
         return true;
     }
 
+    public void removerMusicadoTXT(String caminho){
+        for (Musica musica : bd_allMusica){
+            if (musica.getCaminho().equals(caminho)){
+                bd_allMusica.remove(musica);
+                atualizarArquivoMusica(bd_allMusica);
+            }
+        }
+
+        File musica = new File(caminho);
+        if (musica != null) {
+            musica.delete();
+        }
+    }
+
 
     /**
      * Exclui um diretório do DAO e do arquivo de texto.
@@ -171,69 +143,9 @@ public class diretoriosDAO {
         return true;
     }
 
-    /**
-     * Lê os caminhos das músicas a partir do arquivo de texto.
-     *
-     * @param filePath O caminho do arquivo de texto.
-     * @return A lista de caminhos das músicas.
-     */
-    public List<String> readSongPathsFromTextFile(String filePath) {
-        List<String> caminhos = new ArrayList<>();
-        try {
-            Path arquivo = Paths.get(filePath);
-            caminhos = Files.readAllLines(arquivo);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return caminhos;
-    }
-
-    /**
-     * Obtém a lista de todos os caminhos dos diretórios no DAO.
-     *
-     * @return A lista de caminhos dos diretórios.
-     */
-    public List<String> listarPaths() {
-        return bd_dir_caminhos;
-    }
 
     // Métodos não implementados
 
-    /**
-     * Busca um objeto por ID.
-     *
-     * @param id O ID do objeto a ser buscado.
-     * @return O objeto encontrado ou null se não for encontrado.
-     */
-    public Object buscarPorId(int id) {
-        return null;
-    }
-
-    /**
-     * Atualiza um objeto no DAO.
-     *
-     * @param objeto O objeto a ser atualizado.
-     * @return True se o objeto for atualizado com sucesso, False caso contrário.
-     */
-    public boolean atualizar(Object objeto) {
-        return false;
-    }
-
-    /**
-     * Exclui um objeto do DAO.
-     *
-     * @param objeto O objeto a ser excluído.
-     * @return True se o objeto for excluído com sucesso, False caso contrário.
-     */
-    public boolean excluir(Object objeto) {
-        return false;
-    }
-
-    /**
-     * Atualiza o arquivo de texto com os diretórios.
-     *
-     * @param diretorios A lista de diretórios.
-     */
     public void atualizarArquivo(List<String> diretorios) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_DIRETORIOS, false))) {
             for (String caminho : bd_dir_caminhos) {
@@ -245,30 +157,27 @@ public class diretoriosDAO {
         }
     }
 
-    public static List<String> getBd_dir_caminhos() {
-        return bd_dir_caminhos;
+    public void atualizarArquivoMusica(List<Musica> bd_allMusica) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_MUSICAS, false))) {
+            for (Musica musica : bd_allMusica) {
+                arquivo.escreverArquivo(SRC_MUSICAS, musica.getTitulo() + ",," + musica.getArtista() + ",," + musica.getCaminho());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static List<Directory> getBd_diretorios() {
         return bd_diretorios;
     }
 
-
     public static final String getSrcMusicas() {
         return SRC_MUSICAS;
     }
-
-    public static void setBd_dir_caminhos(List<String> bd_dir_caminhos) {
-        diretoriosDAO.bd_dir_caminhos = bd_dir_caminhos;
-    }
-
 
     public static List<Musica> getBd_allMusica() {
         return bd_allMusica;
     }
 
-    public static Map<Integer, List<List<Musica>>> getBd_playlists() {
-        return bd_playlists;
-    }
 
 }

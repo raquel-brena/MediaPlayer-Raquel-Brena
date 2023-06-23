@@ -34,13 +34,14 @@ public class playlistDAO {
         File folder = new File(caminhoPastaPlaylists);
 
         File[] txt = folder.listFiles((dir, name) -> name.endsWith(".txt"));
+        if (folder != null) {
+            if (txt != null) {
+                for (File file : txt) {
+                    Playlist playlist = lerPlaylistArquivo(file).getSecond();
+                    Integer idPlaylist = lerPlaylistArquivo(file).getFirst();
 
-        if (txt != null) {
-            for (File file : txt) {
-                Playlist playlist = lerPlaylistArquivo(file).getSecond();
-                Integer idPlaylist = lerPlaylistArquivo(file).getFirst();
-
-                salvarMemoriaPlaylist(idPlaylist, playlist);
+                    salvarMemoriaPlaylist(idPlaylist, playlist);
+                }
             }
         }
     }

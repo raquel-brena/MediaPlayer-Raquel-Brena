@@ -95,7 +95,7 @@
                         <Cursor fx:constant="DEFAULT" />
                      </cursor></ListView>
                   <Button layoutX="398.0" layoutY="85.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Update" />
-                  <Button layoutX="398.0" layoutY="167.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Delete" />
+                  <Button layoutX="398.0" layoutY="167.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="64.0" prefWidth="66.0" text="Delete" />
                   <Label fx:id="nameDiretorio" layoutX="15.0" layoutY="43.0" text="NOME DIRETORIO">
                      <font>
                         <Font name="Century Gothic" size="27.0" />
@@ -107,13 +107,16 @@
       </SplitPane>
       <Pane layoutX="-3.0" layoutY="430.0" prefHeight="90.0" prefWidth="967.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #0000FD;">
          <children>
-            <ProgressBar layoutX="212.0" layoutY="48.0" prefHeight="20.0" prefWidth="536.0" progress="0.0">
+            <ProgressBar fx:id="songProgressBar" layoutX="212.0" layoutY="48.0" onDragDetected="#dragProgressBar" onMouseClicked="#dragProgressBar" onMouseDragged="#dragProgressBar" prefHeight="20.0" prefWidth="536.0" progress="0.0">
                <effect>
                   <MotionBlur />
                </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ProgressBar>
             <Label fx:id="nameMusicLabel" alignment="CENTER" layoutX="220.0" layoutY="25.0" prefHeight="19.0" prefWidth="527.0" text="Nome Música - Artista" textAlignment="CENTER" />
-            <Button layoutX="54.0" layoutY="44.0" mnemonicParsing="false" text="&lt;">
+            <Button layoutX="54.0" layoutY="44.0" mnemonicParsing="false" onAction="#previousMedia" text="&lt;">
                <effect>
                   <InnerShadow>
                      <color>
@@ -131,8 +134,9 @@
                   </InnerShadow>
                </effect>
             </Button>
-            <Slider fx:id="volumeSlider" layoutX="797.0" layoutY="49.0" prefHeight="16.0" prefWidth="103.0" />
+            <Slider fx:id="volumeSlider" layoutX="838.0" layoutY="49.0" onDragDetected="#volume" onMouseClicked="#volume" onMouseDragged="#volume" prefHeight="16.0" prefWidth="103.0" showTickMarks="true" />
             <ToggleButton fx:id="playButton" layoutX="84.0" layoutY="44.0" mnemonicParsing="false" onAction="#play" text="Play" />
+            <Label fx:id="durationSong" layoutX="755.0" layoutY="48.0" text="Label" />
          </children>
       </Pane>
    </children>

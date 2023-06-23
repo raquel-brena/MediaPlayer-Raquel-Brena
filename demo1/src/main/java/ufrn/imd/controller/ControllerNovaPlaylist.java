@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import ufrn.imd.HelloApplication;
 import ufrn.imd.entities.*;
 
@@ -41,8 +42,11 @@ public class ControllerNovaPlaylist {
     private List<Musica> SONGS_ONLINE_DIRETORIO;
     private List<Musica> SONGS_PLAYLIST;
 
-    private boolean buttonConfirmar = false;
+    private boolean buttonConfirmar ;
     private Directory playlist;
+
+    private Stage dialogStage;
+    private ControllerPlayer controllerPlayer;
 
     public ControllerNovaPlaylist() {
         SONGS_ONLINE_DIRETORIO = new ArrayList<>();
@@ -50,22 +54,25 @@ public class ControllerNovaPlaylist {
         playlist = new Directory();
         MusicaObservableListPlaylist = FXCollections.observableArrayList();
         MusicaObservableListDiretorio = FXCollections.observableArrayList();
+        buttonConfirmar = false;
     }
 
     @FXML
     public void createPlaylist() throws IOException {
-        if (nomePlaylistTextField.getText() == ""){
+        if (nomePlaylistTextField.getText().isEmpty()) {
             warningLabel.setVisible(true);
             warningLabel.setText("É obrigatório adicionar um nome para a sua playlist");
         } else {
             if (usuarioVIP instanceof UsuarioVip) {
                 UsuarioVip usuarioVipCasting = (UsuarioVip) usuarioVIP;
-                usuarioVipCasting.criarPlaylist((UsuarioVip) usuarioVIP, nomePlaylistTextField.getText(), SONGS_PLAYLIST);
+                usuarioVipCasting.criarPlaylist(nomePlaylistTextField.getText(), SONGS_PLAYLIST);
             }
-           // this.buttonConfirmar = true;
-            voltar();
+            this.buttonConfirmar = true;
         }
+
+        voltar();
     }
+
 
     public void limparTela(){
         MusicaObservableListPlaylist.clear();
@@ -108,7 +115,7 @@ public class ControllerNovaPlaylist {
     }
 
     public boolean isButtonConfirmar() {
-        return buttonConfirmar;
+        return this.buttonConfirmar;
     }
 
     public void setButtonConfirmar(boolean buttonConfirmar) {
@@ -123,11 +130,25 @@ public class ControllerNovaPlaylist {
             MusicaObservableListPlaylist.remove(musicaSelecionada);
             SONGS_PLAYLIST.remove(musicaSelecionada);
         }
+        listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
+        listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
+            @Override
+            protected void updateItem(Musica musica, boolean empty) {
+                super.updateItem(musica, empty);
+
+                if (empty || musica == null) {
+                    setText(null);
+                } else {
+                    setText(musica.getTitulo() + " - " + musica.getArtista());
+                }
+            }
+        });
     }
 
     @FXML
     public void voltar (){
         warningLabel.setVisible(false);
+        this.buttonConfirmar = true;
         HelloApplication.changeScreen("player",usuarioVIP.getNome());
         limparTela();
     }
@@ -153,5 +174,11 @@ public class ControllerNovaPlaylist {
         });
     }
 
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
 
+    public void setControllerPlayer(ControllerPlayer controllerPlayer) {
+        this.controllerPlayer = controllerPlayer;
+    }
 }
