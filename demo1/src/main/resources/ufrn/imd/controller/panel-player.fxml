@@ -14,15 +14,16 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" stylesheets="@../../../css/player.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerPlayer">
    <children>
-      <MenuBar prefHeight="27.0" prefWidth="960.0">
+      <MenuBar prefHeight="27.0" prefWidth="964.0">
         <menus>
           <Menu mnemonicParsing="false" text="Perfil">
             <items>
@@ -34,80 +35,103 @@
             <items>
               <MenuItem fx:id="mnAddMusica" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
                   <MenuItem fx:id="mnNewPlaylist" mnemonicParsing="false" onAction="#showFXMLPanelPlaylist" text="Nova Playlist" />
-                  <MenuItem fx:id="mnAddMusica21" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Visualizar Playlists" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Administrador">
                <items>
-                  <MenuItem fx:id="mnAddMusica1" mnemonicParsing="false" onAction="#showFXMLPanelNovaMusica" text="Adicionar Música" />
+                  <MenuItem fx:id="mnAdmin" mnemonicParsing="false" onAction="#serMnAdmin" text="Usuarios Cadastrados" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="mnItemAbout" mnemonicParsing="false" onAction="#showFXMLAbout" text="About" />
             </items>
           </Menu>
         </menus>
+         <effect>
+            <InnerShadow blurType="ONE_PASS_BOX" choke="0.21" height="61.03" radius="27.42" width="50.65">
+               <color>
+                  <Color red="0.8657407164573669" green="0.876928985118866" blue="1.0" />
+               </color>
+            </InnerShadow>
+         </effect>
       </MenuBar>
-      <SplitPane dividerPositions="0.498960498960499" layoutX="-1.0" layoutY="27.0" pickOnBounds="false" prefHeight="404.0" prefWidth="964.0">
+      <SplitPane dividerPositions="0.498960498960499" layoutX="-1.0" layoutY="27.0" pickOnBounds="false" prefHeight="404.0" prefWidth="964.0" style="-fx-border-color: transparent;">
         <items>
-          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="489.0">
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="489.0" style="-fx-background-color: transparent;">
                <children>
-                  <ImageView fx:id="userImage" fitHeight="90.0" fitWidth="139.0" layoutX="151.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color red="0.3552631437778473" green="0.18914473056793213" blue="0.18914473056793213" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ImageView>
-                  <ListView fx:id="listViewPlaylist" fixedCellSize="25.0" layoutX="28.0" layoutY="259.0" onMouseClicked="#exibirPlaylist" prefHeight="129.0" prefWidth="422.0" style="-fx-background-radius: 50;">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <effect>
-                        <DropShadow height="255.0" radius="127.0" width="255.0">
-                           <color>
-                              <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </ListView>
-                  <ToggleButton fx:id="diretorioButton" layoutX="37.0" layoutY="218.0" mnemonicParsing="false" onAction="#dirToggleButton" prefHeight="25.0" prefWidth="405.0" style="-fx-background-radius: 50;" text="DIRETÓRIO" />
-                  <Pane layoutX="72.0" layoutY="150.0" prefHeight="56.0" prefWidth="298.0">
+                  <Pane prefHeight="400.0" prefWidth="476.0" styleClass="pane2">
                      <children>
-                        <Label fx:id="vipStatusLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="42.0" prefHeight="19.0" prefWidth="305.0" text="ATIVO/DESATIVADO" />
-                        <Label fx:id="usernameLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="19.0" prefHeight="19.0" prefWidth="298.0" text="Nome Usuario" />
+                        <ImageView fx:id="userImage" fitHeight="90.0" fitWidth="139.0" layoutX="43.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color red="0.3552631437778473" green="0.18914473056793213" blue="0.18914473056793213" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </ImageView>
+                        <ListView fx:id="listViewPlaylist" fixedCellSize="25.0" layoutX="27.0" layoutY="257.0" onMouseClicked="#exibirPlaylist" prefHeight="129.0" prefWidth="422.0" style="-fx-background-radius: 50;">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ListView>
+                        <Button fx:id="refreshButton" layoutX="234.0" layoutY="225.0" mnemonicParsing="false" onAction="#atualizarButton" prefHeight="6.0" prefWidth="200.0" text="Refresh">
+                           <effect>
+                              <Reflection />
+                           </effect>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="deletePlaylistButton" layoutX="43.0" layoutY="225.0" mnemonicParsing="false" onAction="#removePlaylist" prefHeight="19.0" prefWidth="189.0" text="Delete">
+                           <effect>
+                              <Reflection />
+                           </effect>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="vipStatusLabel" contentDisplay="RIGHT" layoutX="193.0" layoutY="91.0" prefHeight="19.0" prefWidth="305.0" text="ATIVO/DESATIVADO" />
+                        <Label fx:id="usernameLabel" contentDisplay="RIGHT" layoutX="193.0" layoutY="71.0" prefHeight="19.0" prefWidth="298.0" text="Nome Usuario" />
+                        <ToggleButton fx:id="diretorioButton" layoutX="36.0" layoutY="193.0" mnemonicParsing="false" onAction="#dirToggleButton" prefHeight="25.0" prefWidth="405.0" style="-fx-background-radius: 50;" text="DIRETÓRIO" />
                      </children>
                   </Pane>
                </children>
             </AnchorPane>
-          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="447.0">
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="249.0" prefWidth="447.0" style="-fx-background-color: transparent;">
                <children>
-                  <ImageView fitHeight="133.0" fitWidth="139.0" layoutX="234.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
-                     <effect>
-                        <DropShadow />
-                     </effect>
-                  </ImageView>
-                  <ListView fx:id="listViewMusicas" layoutX="15.0" layoutY="85.0" prefHeight="311.0" prefWidth="369.0">
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor></ListView>
-                  <Button layoutX="398.0" layoutY="85.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="66.0" text="Update" />
-                  <Button layoutX="398.0" layoutY="167.0" mnemonicParsing="false" onAction="#removeButton" prefHeight="64.0" prefWidth="66.0" text="Delete" />
-                  <Label fx:id="nameDiretorio" layoutX="15.0" layoutY="43.0" text="NOME DIRETORIO">
-                     <font>
-                        <Font name="Century Gothic" size="27.0" />
-                     </font>
-                  </Label>
+                  <Pane prefHeight="402.0" prefWidth="479.0" style="-fx-border-color: transparent;" styleClass="pane">
+                     <children>
+                        <ListView fx:id="listViewMusicas" layoutX="-7.0" layoutY="91.0" opacity="0.8" prefHeight="307.0" prefWidth="492.0" style="-fx-background-color: transparent; -fx-border-color: transparent;" styleClass="listViewMusicas">
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ListView>
+                        <Button disable="true" layoutX="399.0" layoutY="14.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="66.0" text="Update">
+                           <effect>
+                              <Reflection />
+                           </effect>
+                        </Button>
+                        <Button layoutX="399.0" layoutY="59.0" mnemonicParsing="false" onAction="#removeMusicButton" prefHeight="20.0" prefWidth="66.0" text="Delete">
+                           <effect>
+                              <Reflection />
+                           </effect>
+                        </Button>
+                        <Label fx:id="nameDiretorio" layoutX="46.0" layoutY="41.0" prefHeight="64.0" prefWidth="369.0" text="NOME DIRETORIO" textOverrun="CLIP">
+                           <font>
+                              <Font name="Eras Bold ITC" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
                </children>
             </AnchorPane>
         </items>
       </SplitPane>
-      <Pane layoutX="-3.0" layoutY="430.0" prefHeight="90.0" prefWidth="967.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #0000FD;">
+      <Pane layoutX="-3.0" layoutY="430.0" prefHeight="90.0" prefWidth="964.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <ProgressBar fx:id="songProgressBar" layoutX="212.0" layoutY="48.0" onDragDetected="#dragProgressBar" onMouseClicked="#dragProgressBar" onMouseDragged="#dragProgressBar" prefHeight="20.0" prefWidth="536.0" progress="0.0">
+            <ProgressBar fx:id="songProgressBar" layoutX="234.0" layoutY="48.0" onDragDetected="#dragProgressBar" onMouseClicked="#dragProgressBar" onMouseDragged="#dragProgressBar" prefHeight="20.0" prefWidth="500.0" progress="0.0">
                <effect>
                   <MotionBlur />
                </effect>
@@ -116,27 +140,10 @@
                </cursor>
             </ProgressBar>
             <Label fx:id="nameMusicLabel" alignment="CENTER" layoutX="220.0" layoutY="25.0" prefHeight="19.0" prefWidth="527.0" text="Nome Música - Artista" textAlignment="CENTER" />
-            <Button layoutX="54.0" layoutY="44.0" mnemonicParsing="false" onAction="#previousMedia" text="&lt;">
-               <effect>
-                  <InnerShadow>
-                     <color>
-                        <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
-                     </color>
-                  </InnerShadow>
-               </effect>
-            </Button>
-            <Button fx:id="nextButton" layoutX="128.0" layoutY="44.0" mnemonicParsing="false" onAction="#nextMedia" text="&gt;">
-               <effect>
-                  <InnerShadow>
-                     <color>
-                        <Color red="0.4431372582912445" green="0.45490196347236633" blue="1.0" />
-                     </color>
-                  </InnerShadow>
-               </effect>
-            </Button>
-            <Slider fx:id="volumeSlider" layoutX="838.0" layoutY="49.0" onDragDetected="#volume" onMouseClicked="#volume" onMouseDragged="#volume" prefHeight="16.0" prefWidth="103.0" showTickMarks="true" />
-            <ToggleButton fx:id="playButton" layoutX="84.0" layoutY="44.0" mnemonicParsing="false" onAction="#play" text="Play" />
-            <Label fx:id="durationSong" layoutX="755.0" layoutY="48.0" text="Label" />
+            <Button fx:id="previousButton" layoutX="47.0" layoutY="45.0" mnemonicParsing="false" onAction="#previousMedia" text="&lt;" />
+            <Button fx:id="nextButton" alignment="CENTER" layoutX="129.0" layoutY="45.0" mnemonicParsing="false" onAction="#nextMedia" prefHeight="27.0" prefWidth="27.0" styleClass="nextButton" text="&gt;" textOverrun="CLIP" />
+            <Slider fx:id="volumeSlider" layoutX="817.0" layoutY="45.0" onDragDetected="#volume" onMouseClicked="#volume" onMouseDragged="#volume" prefHeight="16.0" prefWidth="103.0" showTickMarks="true" />
+            <ToggleButton fx:id="playButton" layoutX="80.0" layoutY="45.0" mnemonicParsing="false" onAction="#play" styleClass="play-button" stylesheets="@../../../css/player.css" text="Play" />
          </children>
       </Pane>
    </children>

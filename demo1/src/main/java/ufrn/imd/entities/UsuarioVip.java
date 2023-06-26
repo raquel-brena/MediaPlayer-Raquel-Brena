@@ -1,14 +1,13 @@
 package ufrn.imd.entities;
 
-
-import ufrn.imd.DAO.diretoriosDAO;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Classe que representa um usuário VIP.
+ */
 public class UsuarioVip extends Usuario {
     private List<Playlist> playlists;
 
@@ -16,30 +15,86 @@ public class UsuarioVip extends Usuario {
         playlists = new ArrayList<>();
     }
 
+    /**
+     * Construtor que recebe os dados do usuário VIP.
+     *
+     * @param nome    O nome do usuário.
+     * @param email   O email do usuário.
+     * @param senha   A senha do usuário.
+     * @param isAdmin Indica se o usuário é um administrador.
+     */
     public UsuarioVip(String nome, String email, String senha, boolean isAdmin) {
         super(nome, email, senha, isAdmin);
         playlists = new ArrayList<>();
     }
 
-    public void criarPlaylist (String playlistName, List <Musica> musicasPlaylist) throws IOException {
+    public void criarPlaylist (String nomePlaylist, List<Musica> songsPlaylist)  {
         Playlist playlist = new Playlist();
 
-        playlist.setBd_musicasPlay(musicasPlaylist);
-        playlist.setNome(playlistName);
+        playlist.setNome(nomePlaylist);
+        playlist.setBd_musicasPlay(songsPlaylist);
 
-        Playlist.getDaoPlaylist().salvarMemoriaPlaylist(getId(), playlist);
-        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlist);
+        System.out.println("criarPlaylist()");
+        for(Musica musica : playlist.getBd_musicasPlay()){
+            System.out.println(musica.getTitulo());
+        }
+        playlists.add(playlist);
+        Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
     }
 
-    public void excluirPlaylist(Playlist playlistSelecionada){
-        File folder = new File("src/playlists/playlist_" + playlistSelecionada.getNome()+".txt");
+    /**
+     * Exclui uma playlist do usuário VIP.
+     *
+     * @param playlistSelecionada A playlist a ser excluída.
+     */
+    public void excluirPlaylist(Playlist playlistSelecionada) {
+        File folder = new File("src/playlists/playlist_" + playlistSelecionada.getNome() + ".txt");
         folder.delete();
     }
 
+    public void excluirMusicadePlaylists (Musica musicaSelecionada) {
+            for (Playlist playlist : playlists) {
+                if (playlist.getBd_musicasPlay().contains(musicaSelecionada)) {
+                    playlist.getBd_musicasPlay().remove(musicaSelecionada);
+                }
+            }
+       atualizarPlaylists();
+    }
+
+    public void adicionarMusicaPlaylist (String nomePlaylist, Musica musicaSelecionada) {
+        for (Playlist playlist : playlists) {
+            if (playlist.getNome().equals(nomePlaylist)) {
+                playlist.getBd_musicasPlay().add(musicaSelecionada);
+            }
+        }
+        atualizarPlaylists();
+    }
+
+    public void excluirTodasAsPlaylists(){
+        playlists.clear();
+        Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
+    }
+
+    public void atualizarPlaylists(){
+        Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
+    }
+    /**
+     * Obtém a lista de playlists do usuário VIP.
+     *
+     * @return A lista de playlists.
+     */
     public List<Playlist> getPlaylists() {
         return playlists;
     }
 
+    /**
+     * Define a lista de playlists do usuário VIP.
+     *
+     * @param playlists A lista de playlists.
+     */
     public void setPlaylists(List<Playlist> playlists) {
         this.playlists = playlists;
     }

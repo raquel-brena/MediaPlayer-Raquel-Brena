@@ -20,6 +20,9 @@ public class PanelNovaMusicaController implements Initializable {
     private TextField textFieldMusicaArtista;
 
     @FXML
+    private TextField textFieldCaminho;
+
+    @FXML
     private Button CadastroBotaoConfirmar;
 
     @FXML
@@ -45,6 +48,7 @@ public class PanelNovaMusicaController implements Initializable {
 
         if (arquivo != null) {
             musicaNova.setFile(arquivo);
+            textFieldCaminho.setText(arquivo.getPath());
         }
     }
 

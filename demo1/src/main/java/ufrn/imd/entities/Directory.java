@@ -50,7 +50,7 @@ public class Directory {
     public boolean adicionarMusicaFile(Musica novaMusica) {
         File diretorio = new File(caminho);
         File arquivoDestino = new File(diretorio, novaMusica.getTitulo());
-        novaMusica.setDiretorio(arquivoDestino.getPath());
+        novaMusica.setCaminho(arquivoDestino.getPath());
 
         try {
             Files.copy(novaMusica.getFile().toPath(), arquivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -70,22 +70,30 @@ public class Directory {
         return true;
     }
 
+    public boolean excluirTodasAsMusicas() {
+        bd_musicas.clear();
 
-    public List<Musica> getMusicaList() {
-        return bd_musicas;
+        File folder = new File(caminho);
+        if (folder.exists() && folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        boolean deleted = file.delete();
+                        if (!deleted) {
+                            System.out.println("Falha ao excluir o arquivo: " + file.getAbsolutePath());
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     public static diretoriosDAO getDaoDiretorios() {
         return DAO_DIRETORIOS;
-    }
-
-    public List<File> getAllFileSong() {
-        List<File> allFiles = new ArrayList<>();
-
-        for (Musica musica : bd_musicas) {
-            allFiles.add(musica.getFile());
-        }
-        return allFiles;
     }
 
     public List<Musica> getAllSongs() {
@@ -96,24 +104,8 @@ public class Directory {
         return caminho;
     }
 
-    public static void setDaoDiretorios(diretoriosDAO daoDiretorios) {
-        DAO_DIRETORIOS = daoDiretorios;
-    }
-
     public void setCaminho(String caminho) {
         this.caminho = caminho;
-    }
-
-    public List<Musica> getMusicasDiretorio() {
-        return bd_musicas;
-    }
-
-    public ArquivoUtil getArquivo() {
-        return arquivo;
-    }
-
-    public void setArquivo(ArquivoUtil arquivo) {
-        this.arquivo = arquivo;
     }
 
     public File getFile() {
@@ -123,19 +115,6 @@ public class Directory {
     public void setFile(File file) {
         this.file = file;
     }
-
-    public void setBd_musicas(List<Musica> bd_musicas) {
-        this.bd_musicas = bd_musicas;
-    }
-
-    public void setMusicasPlaylist(List<Musica> musicas) {
-        this.bd_musicas = musicas;
-
-        /*for (Musica musica : musicas) {
-            arquivo.escreverArquivo(DAO_DIRETORIOS.getSrcMusicas(), musica.getTitulo() + ",," + musica.getArtista() + ",," + musica.getCaminho());
-        }*/
-    }
-
 
 
 

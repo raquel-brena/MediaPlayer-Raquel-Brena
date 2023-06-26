@@ -5,12 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import ufrn.imd.HelloApplication;
+import ufrn.imd.MediaPlayer;
 import ufrn.imd.entities.*;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,42 +17,39 @@ public class ControllerNovaPlaylist {
     @FXML
     private TextField nomePlaylistTextField;
     @FXML
-    private Button addSongButton;
-    @FXML
-    private Button removeSongButton;
-    @FXML
-    private Button newPlaylistButton;
-    @FXML
-    private Button homeButton;
-
-    @FXML
     private Label warningLabel;
 
     @FXML
     private ListView<Musica> listViewSongsPlaylist;
     @FXML
     private ListView<Musica> listViewSongsDiretorio;
-
     private ObservableList<Musica> MusicaObservableListPlaylist;
     private ObservableList<Musica> MusicaObservableListDiretorio;
-    private Usuario usuarioVIP =  new UsuarioVip();
+    private UsuarioVip usuarioVIP =  new UsuarioVip();
     private List<Musica> SONGS_ONLINE_DIRETORIO;
     private List<Musica> SONGS_PLAYLIST;
-
-    private boolean buttonConfirmar ;
-    private Directory playlist;
-
+    private boolean buttonConfirmar;
     private Stage dialogStage;
-    private ControllerPlayer controllerPlayer;
+    private String nomePlaylist;
 
     public ControllerNovaPlaylist() {
         SONGS_ONLINE_DIRETORIO = new ArrayList<>();
         SONGS_PLAYLIST = new ArrayList<>();
-        playlist = new Directory();
         MusicaObservableListPlaylist = FXCollections.observableArrayList();
         MusicaObservableListDiretorio = FXCollections.observableArrayList();
         buttonConfirmar = false;
     }
+
+    public String getNomePlaylist (){
+        this.nomePlaylist = nomePlaylistTextField.getText();
+        return this.nomePlaylist;
+    }
+
+
+    public List<Musica> getSongsPlaylist(){
+        return SONGS_PLAYLIST;
+    }
+
 
     @FXML
     public void createPlaylist() throws IOException {
@@ -63,15 +57,20 @@ public class ControllerNovaPlaylist {
             warningLabel.setVisible(true);
             warningLabel.setText("É obrigatório adicionar um nome para a sua playlist");
         } else {
-            if (usuarioVIP instanceof UsuarioVip) {
-                UsuarioVip usuarioVipCasting = (UsuarioVip) usuarioVIP;
-                usuarioVipCasting.criarPlaylist(nomePlaylistTextField.getText(), SONGS_PLAYLIST);
-            }
+            usuarioVIP.criarPlaylist(nomePlaylistTextField.getText(), SONGS_PLAYLIST);
             this.buttonConfirmar = true;
+            voltar();
         }
-
-        voltar();
     }
+/*
+        if (nomePlaylistTextField.getText().isEmpty()) {
+            warningLabel.setVisible(true);
+            warningLabel.setText("É obrigatório adicionar um nome para a sua playlist");
+        } else {
+            this.new_playlist.setNome(nomePlaylistTextField.getText());
+            this.new_playlist.setBd_musicasPlay(this.SONGS_PLAYLIST);
+
+        }*/
 
 
     public void limparTela(){
@@ -79,38 +78,34 @@ public class ControllerNovaPlaylist {
         MusicaObservableListDiretorio.clear();
         nomePlaylistTextField.clear();
         SONGS_PLAYLIST.clear();
+        this.buttonConfirmar = true;
     }
 
-    public void setUsuarioOnline(Usuario usuarioOnline) {
+    public void setUsuarioOnline(UsuarioVip usuarioOnline) {
         this.usuarioVIP = usuarioOnline;
         SONGS_ONLINE_DIRETORIO = usuarioOnline.getDirectory().getAllSongs();
+
         exibirMusicasDiretorio();
     }
 
-    public void addMusicaPlaylist() throws IOException {
+    @FXML
+    public void addMusicaPlaylist() {
         warningLabel.setVisible(false);
         Musica musicaSelecionada = listViewSongsDiretorio.getSelectionModel().getSelectedItem();
-        if (musicaSelecionada != null ) {
-            if (!SONGS_PLAYLIST.contains(musicaSelecionada)) {
-                MusicaObservableListPlaylist.add(musicaSelecionada);
-                SONGS_PLAYLIST.add(musicaSelecionada);
-                listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
-                listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
-                    @Override
-                    protected void updateItem(Musica musica, boolean empty) {
-                        super.updateItem(musica, empty);
-
-                        if (empty || musica == null) {
-                            setText(null);
-                        } else {
-                            setText(musica.getTitulo() + " - " + musica.getArtista());
-                        }
-                    }
-                });
-
-            } else {
-                warningLabel.setText("A música selecionada já está na playlist!");
-            }
+        if (musicaSelecionada != null && !SONGS_PLAYLIST.contains(musicaSelecionada)) {
+            MusicaObservableListPlaylist.add(musicaSelecionada);
+            SONGS_PLAYLIST.add(musicaSelecionada);
+            listViewSongsPlaylist.setItems(MusicaObservableListPlaylist);
+            listViewSongsPlaylist.setCellFactory(param -> new ListCell<Musica>() {
+                @Override
+                protected void updateItem(Musica musica, boolean empty) {
+                    super.updateItem(musica, empty);
+                    setText(empty || musica == null ? null : musica.getTitulo() + " - " + musica.getArtista());
+                }
+            });
+        } else {
+            warningLabel.setText("A música selecionada já está na playlist!");
+            warningLabel.setVisible(true);
         }
     }
 
@@ -148,8 +143,7 @@ public class ControllerNovaPlaylist {
     @FXML
     public void voltar (){
         warningLabel.setVisible(false);
-        this.buttonConfirmar = true;
-        HelloApplication.changeScreen("player",usuarioVIP.getNome());
+        MediaPlayer.changeScreen("player",usuarioVIP.getNome());
         limparTela();
     }
 
@@ -178,7 +172,4 @@ public class ControllerNovaPlaylist {
         this.dialogStage = dialogStage;
     }
 
-    public void setControllerPlayer(ControllerPlayer controllerPlayer) {
-        this.controllerPlayer = controllerPlayer;
-    }
 }

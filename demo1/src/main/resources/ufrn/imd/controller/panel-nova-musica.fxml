@@ -11,12 +11,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="333.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.PanelNovaMusicaController">
+<AnchorPane prefHeight="333.0" prefWidth="529.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.PanelNovaMusicaController">
    <children>
-      <Pane layoutX="11.0" layoutY="66.0" prefHeight="183.0" prefWidth="506.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+      <Pane layoutX="11.0" layoutY="66.0" prefHeight="225.0" prefWidth="509.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
          <children>
             <GridPane alignment="CENTER" layoutX="15.0" layoutY="64.0" prefHeight="80.0" prefWidth="458.0">
               <columnConstraints>
@@ -30,11 +28,11 @@
               </rowConstraints>
                <children>
                   <Label contentDisplay="CENTER" text="Titulo" textAlignment="RIGHT" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label text="Artista" textAlignment="RIGHT" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <Button fx:id="escolherArquivoButton" mnemonicParsing="false" onAction="#showFileChooser" prefHeight="27.0" prefWidth="143.0" text="Selecionar Música" GridPane.rowIndex="2" />
-                  <TextField fx:id="textFieldMusicaArtista" prefHeight="66.0" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="textFieldMusicaTitulo" prefHeight="27.0" prefWidth="262.0" GridPane.columnIndex="1" />
-                  <Text fx:id="textFieldMusicaCaminho" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="191.9814453125" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Artista" textAlignment="RIGHT" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <TextField fx:id="textFieldMusicaArtista" prefHeight="66.0" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Button fx:id="escolherArquivoButton" mnemonicParsing="false" onAction="#showFileChooser" prefHeight="27.0" prefWidth="143.0" text="Selecionar Música" GridPane.rowIndex="2" />
+                  <TextField fx:id="textFieldCaminho" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <Label contentDisplay="CENTER" layoutX="173.0" layoutY="14.0" prefHeight="19.0" prefWidth="143.0" text="Nova Música" textAlignment="CENTER">
@@ -42,6 +40,8 @@
                   <Font size="23.0" />
                </font>
             </Label>
+            <Button fx:id="CadastroBotaoConfirmar" layoutX="222.0" layoutY="184.0" mnemonicParsing="false" onAction="#ButtonCadastrarMusica" prefHeight="27.0" prefWidth="100.0" text="Cadastrar" />
+            <Button fx:id="CadastroBotaoCancelar" layoutX="325.0" layoutY="184.0" mnemonicParsing="false" onAction="#handleButtonCancelar" prefHeight="27.0" prefWidth="100.0" text="Cancelar" />
          </children>
          <effect>
             <DropShadow blurType="GAUSSIAN">
@@ -51,7 +51,5 @@
             </DropShadow>
          </effect>
       </Pane>
-      <Button fx:id="CadastroBotaoConfirmar" layoutX="360.0" layoutY="279.0" mnemonicParsing="false" onAction="#ButtonCadastrarMusica" text="Confirmar" />
-      <Button fx:id="CadastroBotaoCancelar" layoutX="447.0" layoutY="279.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar" />
    </children>
 </AnchorPane>

@@ -1,6 +1,6 @@
 package ufrn.imd.controller;
 
-import ufrn.imd.HelloApplication;
+import ufrn.imd.MediaPlayer;
 import ufrn.imd.entities.Usuario;
 import ufrn.imd.entities.UsuarioComum;
 import javafx.fxml.FXML;
@@ -17,33 +17,26 @@ import java.io.IOException;
  * Controlador para o painel de login.
  */
 public class ControllerLogin {
-
     @FXML
     private Label welcomeText;
-
     @FXML
     private TextField textFieldLoginEmail;
-
     @FXML
     private TextField textFieldLoginSenha;
-
     @FXML
     private Button buttonLoginEntrar;
-
     @FXML
     private Button buttonLoginCadastrar;
-
     @FXML
     private MenuItem mnIAdicionarMusica;
-
     private boolean usuarioLogado = false;
-    private String contentText;
 
     private static Usuario USUARIO;
     private static Usuario novoUsuario;
-
     private ControllerPlayer controllerPlayer;
     private controllerCadastros cadastros = new controllerCadastros();
+
+
 
     /**
      * Construtor da classe ControllerLogin.
@@ -52,8 +45,9 @@ public class ControllerLogin {
     public ControllerLogin() {
         this.novoUsuario = new UsuarioComum();
         this.USUARIO = new UsuarioComum();
+       // UsuarioVip masterAdmin = new UsuarioVip("Master Admin", "admin@email.com","admin123",true);
+       // masterAdmin.getDaoUsuario().getBd_usuarios().add(masterAdmin);
     }
-
     /**
      * Define o controlador do player.
      *
@@ -62,7 +56,6 @@ public class ControllerLogin {
     public void setControllerPlayer(ControllerPlayer controllerPlayer) {
         this.controllerPlayer = controllerPlayer;
     }
-
     /**
      * Manipula o evento do botão "Cadastrar".
      * Abre o painel de cadastro de usuários e realiza o cadastro se confirmado pelo usuário.
@@ -85,7 +78,6 @@ public class ControllerLogin {
             alert.showAndWait();
         }
     }
-
     /**
      * Manipula o evento do botão "Entrar".
      * Verifica as credenciais do usuário e realiza o login se válido.
@@ -99,20 +91,38 @@ public class ControllerLogin {
 
         for (Usuario usuario : novoUsuario.getDaoUsuario().listar()) {
             if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
-                HelloApplication.changeScreen("player", usuario.getNome());
+                USUARIO = usuario;
+                USUARIO.setOnline(true);
                 textFieldLoginEmail.clear();
                 textFieldLoginSenha.clear();
                 usuarioLogado = true;
-                USUARIO = usuario;
-                USUARIO.setOnline(true);
+
+                MediaPlayer.changeScreen("player", usuario.getNome());
                 System.out.print("class login entrar: diretorio: " + USUARIO.getDirectory().toString());
                 controllerPlayer.setUsuarioOnline(USUARIO);
+
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Seja bem-vindo(a)!");
                 alert.showAndWait();
                 return;
             }
         }
+        for (Usuario usuario : novoUsuario.getDaoUsuario().getBd_admins()) {
+            if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
+                USUARIO = usuario;
+                USUARIO.setOnline(true);
+                textFieldLoginEmail.clear();
+                textFieldLoginSenha.clear();
+                usuarioLogado = true;
 
+                MediaPlayer.changeScreen("player", usuario.getNome());
+                System.out.print("class login entrar: diretorio: " + USUARIO.getDirectory().toString());
+                controllerPlayer.setUsuarioOnline(USUARIO);
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Seja bem-vindo(a)!");
+                alert.showAndWait();
+                return;
+            }
+            }
         System.out.println("Usuário não encontrado.");
     }
 
@@ -146,5 +156,4 @@ public class ControllerLogin {
 
         return controller.isButtonConfirmarClicked();
     }
-
 }

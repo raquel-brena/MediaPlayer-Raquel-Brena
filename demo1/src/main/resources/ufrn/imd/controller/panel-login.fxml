@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ImageInput?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -11,7 +13,17 @@
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="960.0" style="-fx-background-color: ca7ffe;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.ControllerLogin">
    <children>
-      <Pane layoutX="259.0" layoutY="163.0" prefHeight="195.0" prefWidth="445.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+      <Pane prefHeight="520.0" prefWidth="960.0">
+         <effect>
+            <ImageInput>
+               <source>
+                  <Image url="file:/C:/Users/RB/Desktop/java/mediaplyer/demo1/src/main/resources/Design%20sem%20nome.png" />
+               </source>
+            </ImageInput>
+         </effect>
+      </Pane>
+      <Pane layoutX="259.0" layoutY="172.0" prefHeight="195.0" prefWidth="445.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90; -fx-border-color: black; -fx-border-radius: 90;" />
+      <Pane layoutX="259.0" layoutY="163.0" prefHeight="195.0" prefWidth="445.0" style="-fx-background-color: white; -fx-background-radius: 90; -fx-border-color: black; -fx-border-radius: 90;">
          <children>
             <TextField fx:id="textFieldLoginEmail" layoutX="57.0" layoutY="39.0" prefHeight="27.0" prefWidth="326.0" />
             <PasswordField fx:id="textFieldLoginSenha" layoutX="57.0" layoutY="91.0" prefHeight="27.0" prefWidth="326.0" />
@@ -28,12 +40,17 @@
             </Label>
          </children>
       </Pane>
-      <Text fill="#daff7c" layoutX="329.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaPlayer ">
+      <Text fill="#5e5e5e" layoutX="319.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaPlayer ">
          <font>
-            <Font name="Franklin Gothic Book" size="51.0" />
+            <Font name="Eras Bold ITC" size="50.0" />
          </font>
       </Text>
-      <Text layoutX="352.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ainda não possui cadastro?" />
-      <Button fx:id="buttonLoginCadastrar" layoutX="522.0" layoutY="472.0" mnemonicParsing="false" onAction="#handleButtonCadastrar" text="Cadastre-se" />
+      <Text fill="#daff7c" layoutX="317.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaPlayer ">
+         <font>
+            <Font name="Eras Bold ITC" size="50.0" />
+         </font>
+      </Text>
+      <Text layoutX="352.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ainda não possui cadastro?" />
+      <Button fx:id="buttonLoginCadastrar" layoutX="522.0" layoutY="434.0" mnemonicParsing="false" onAction="#handleButtonCadastrar" text="Cadastre-se" />
    </children>
 </AnchorPane>

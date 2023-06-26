@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import ufrn.imd.entities.UsuarioComum;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -26,12 +25,6 @@ public class controllerCadastros implements Initializable {
 
     @FXML
     private TextField textFieldCadastroSenha;
-
-    @FXML
-    private Button CadastroBotaoConfirmar;
-
-    @FXML
-    private Button CadastroBotaoCancelar;
 
     private Stage dialogStage;
     private boolean buttonConfirmarClicked = false;
@@ -104,46 +97,6 @@ public class controllerCadastros implements Initializable {
     public void handleButtonCancelar() {
         this.dialogStage.close();
         getDialogStage().close();
-    }
-
-    public TextField getTextFieldCadastroNome() {
-        return textFieldCadastroNome;
-    }
-
-    public void setTextFieldCadastroNome(TextField textFieldCadastroNome) {
-        this.textFieldCadastroNome = textFieldCadastroNome;
-    }
-
-    public TextField getTextFieldCadastroEmail() {
-        return textFieldCadastroEmail;
-    }
-
-    public void setTextFieldCadastroEmail(TextField textFieldCadastroEmail) {
-        this.textFieldCadastroEmail = textFieldCadastroEmail;
-    }
-
-    public TextField getTextFieldCadastroSenha() {
-        return textFieldCadastroSenha;
-    }
-
-    public void setTextFieldCadastroSenha(TextField textFieldCadastroSenha) {
-        this.textFieldCadastroSenha = textFieldCadastroSenha;
-    }
-
-    public Button getCadastroBotaoConfirmar() {
-        return CadastroBotaoConfirmar;
-    }
-
-    public void setCadastroBotaoConfirmar(Button cadastroBotaoConfirmar) {
-        CadastroBotaoConfirmar = cadastroBotaoConfirmar;
-    }
-
-    public Button getCadastroBotaoCancelar() {
-        return CadastroBotaoCancelar;
-    }
-
-    public void setCadastroBotaoCancelar(Button cadastroBotaoCancelar) {
-        CadastroBotaoCancelar = cadastroBotaoCancelar;
     }
 
     public Stage getDialogStage() {

@@ -14,15 +14,20 @@ import ufrn.imd.entities.*;
 public class usuarioDAO  {
     private static final String SRC_USUARIOS = "src/usuarios.txt";
     private static List<Usuario> bd_usuarios;
+    private static List<Usuario> bd_admins;
     private static int id = 0;
     private ArquivoUtil arquivo = new ArquivoUtil();
+    UsuarioVip masterAdmin;
 
     /**
      * Construtor da classe usuarioDAO.
      */
     public usuarioDAO() {
         bd_usuarios = new ArrayList<>();
+        bd_admins = new ArrayList<>();
         lerArquivoUsuario();
+        UsuarioVip admin = new UsuarioVip("admin","admin@email.com","senha", true);
+        bd_admins.add(admin);
     }
 
     /**
@@ -30,7 +35,8 @@ public class usuarioDAO  {
      */
     public void lerArquivoUsuario() {
         bd_usuarios.clear();
-        //adiciondo diretorio ao usuário.
+
+        // Adicionando diretório ao usuário
         Directory directory = new Directory();
         directory.getDaoDiretorios().lerArquivoDiretorio();
         Playlist.getDaoPlaylist().lerArquivoPlaylist();
@@ -39,14 +45,18 @@ public class usuarioDAO  {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dadosUsuario = linha.split(",");
-
                 Usuario usuario = criarUsuario(dadosUsuario);
 
                 for (Directory direcAux : directory.getDaoDiretorios().getBd_diretorios()) {
                     System.out.println(direcAux.getCaminho() + " - " + usuario.getNome());
-                    if (direcAux.getCaminho().contains(usuario.getNome())) {
+                    String caminho = "src\\main\\diretorios\\" + usuario.getNome() + "Diretorio";
+                    if (direcAux.getCaminho().equals(caminho)) {
                         usuario.setDirectory(direcAux);
-                        System.out.println("Diretorio setado no usuario" + direcAux.getCaminho());
+                        System.out.println("Diretório setado no usuário: " + direcAux.getCaminho());
+
+                        for (Musica musc: directory.getAllSongs()){
+                            System.out.println(musc.getTitulo());
+                        }
                     }
                 }
 
@@ -55,9 +65,10 @@ public class usuarioDAO  {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("tentou ler");
+            System.out.println("Erro ao tentar ler o arquivo.");
         }
     }
+
 
 
     private Usuario criarUsuario(String[] dadosUsuario) {
@@ -80,7 +91,7 @@ public class usuarioDAO  {
         if (isVip) {
            //Playlist playlistsUsuario = diretoriosDAO.getBd_playlists().get(usuario.getId());
 
-            List <Playlist> playlistsUsuario = playlistDAO.getBd_playlists().get(usuario.getId());
+            List <Playlist> playlistsUsuario = playlistDAO.getPlaylistsDatabase().get(usuario.getId());
             if (playlistsUsuario!= null){
                 ((UsuarioVip) usuario).setPlaylists(playlistsUsuario);
             }
@@ -96,10 +107,11 @@ public class usuarioDAO  {
     public void atualizarArquivo(List<Usuario> usuarios) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_USUARIOS, false))) {
             for (Usuario usuario : usuarios) {
+                if (!usuario.isAdmin()){
                 String linhaEscrever = usuario.getId() + "," + usuario.getNome() + "," + usuario.getEmail() + "," + usuario.getSenha() + "," + usuario.isAdmin()+ "," +  usuario.getClass().getSimpleName();
                 bw.write(linhaEscrever);
                 bw.newLine();
-            }
+            }}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,11 +150,13 @@ public class usuarioDAO  {
         return true; // Retorna verdadeiro para indicar que o usuário foi adicionado com sucesso
     }
 
-    /**
+    /*
      * Exclui um usuário do arquivo de texto.
      *
      * @param id ID do usuário a ser excluído
      */
+
+    /*
     public void excluirUsuario(int id) {
         boolean encontrado = false;
 
@@ -159,7 +173,7 @@ public class usuarioDAO  {
         } else {
             System.out.println("Usuário não encontrado.");
         }
-    }
+    }*/
 
     /**
      * Visualiza os dados de um usuário no arquivo de texto.
@@ -234,6 +248,15 @@ public class usuarioDAO  {
     }
 
 
+    public static List<Usuario> getBd_usuarios() {
+        return bd_usuarios;
+    }
 
+    public static List<Usuario> getBd_admins() {
+        return bd_admins;
+    }
 
+    public static void setBd_usuarios(List<Usuario> bd_usuarios) {
+        usuarioDAO.bd_usuarios = bd_usuarios;
+    }
 }

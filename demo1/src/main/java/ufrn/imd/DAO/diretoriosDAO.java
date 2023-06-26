@@ -29,6 +29,7 @@ public class diretoriosDAO {
         bd_dir_caminhos = new ArrayList<>();
         bd_diretorios = new ArrayList<>();
         bd_allMusica = new ArrayList<>();
+
     }
 
     /**
@@ -115,18 +116,24 @@ public class diretoriosDAO {
         return true;
     }
 
-    public void removerMusicadoTXT(String caminho){
-        for (Musica musica : bd_allMusica){
-            if (musica.getCaminho().equals(caminho)){
-                bd_allMusica.remove(musica);
-                atualizarArquivoMusica(bd_allMusica);
+    public void removerMusicadoTXT(String caminho) {
+        List<Musica> apagar = new ArrayList<>();
+        for (Musica musica : bd_allMusica) {
+            if (musica.getCaminho().equals(caminho)) {
+                apagar.add(musica);
             }
         }
-
-        File musica = new File(caminho);
-        if (musica != null) {
-            musica.delete();
+        for (Musica musica : apagar) {
+            if (bd_allMusica.contains(musica)) {
+                bd_allMusica.remove(musica);
+            }
         }
+        atualizarArquivoMusica(bd_allMusica);
+
+            File musica = new File(caminho);
+            if (musica != null) {
+                musica.delete();
+            }
     }
 
 

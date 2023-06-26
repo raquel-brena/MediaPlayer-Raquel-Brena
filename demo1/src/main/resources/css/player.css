@@ -1,0 +1,77 @@
+.play-button {
+    /* Estilo do botão */
+}
+
+.play-button .icon {
+    -fx-font-family: "FontAwesome";
+    -fx-font-size: 10px;
+    -fx-text-fill: white;
+    -fx-padding: 0 2px;
+    -fx-text-align: center;
+}
+
+@font-face {
+    font-family: "playerFont";
+    src: url("/fonts/Gotham-Black.otf");
+}
+
+@font-face {
+    font-family: "SpotifyFont";
+    src: url("/fonts/Gotham-Black.otf");
+}
+@font-face {
+    font-family: "BEBAS";
+    src: url("/fonts/BebasNeue-Regular.otf");
+}
+
+#nameDiretorio {
+    -fx-font-family: BEBAS;
+    -fx-font-size: 30px;
+    -fx-font-weight: BOLD;
+}
+
+
+#userImage {
+    -fx-fit-width: 100px;
+    -fx-fit-height: 100px;
+}
+
+#nameArtistLabel {
+
+}
+
+.pane {
+    -fx-background-color: rgba(220, 220, 255, 0.62);
+}
+
+.pane2 {
+    -fx-background-color:rgba(220, 220, 255, 0.62);
+}
+
+
+
+.listViewPlaylist .listViewMusicas {
+    -fx-background-radius: 100;
+    -fx-wrap-text: true;
+    -fx-border-radius: 100;
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-font-size: 14px;
+    -fx-font-family: SpotifyFont;
+    -fx-background-color: transparent;
+    -fx-border-width: 0.5;
+    -fx-border-radius: 100;
+    -fx-border-color: #ffffff;
+}
+
+.list-cell:selected {
+    -fx-background-color: #000000;
+    -fx-font-size: 16px;
+    -fx-text-fill: WHITE;
+    -fx-border-radius: 100;
+}
+
+
+
