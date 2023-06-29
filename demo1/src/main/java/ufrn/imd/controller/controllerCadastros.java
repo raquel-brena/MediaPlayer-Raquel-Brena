@@ -3,6 +3,7 @@ package ufrn.imd.controller;
 import ufrn.imd.DAO.usuarioDAO;
 import ufrn.imd.entities.Usuario;
 import javafx.fxml.FXML;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,17 +31,17 @@ public class controllerCadastros implements Initializable {
     private boolean buttonConfirmarClicked = false;
     private Usuario novoUsuario;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
     /**
      * Construtor da classe controllerCadastros.
      * Cria uma nova instância de UsuarioComum.
      */
     public controllerCadastros() {
         novoUsuario = new UsuarioComum();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
     }
 
     /**
@@ -78,7 +79,6 @@ public class controllerCadastros implements Initializable {
             alert.setHeaderText("Email ou Nickname já cadastrado");
             alert.setContentText("Por favor, tente novamente.");
             alert.showAndWait();
-            return;
         } else {
             Usuario novoID = new UsuarioComum(nome, email, senha, false);
 

@@ -96,10 +96,11 @@ public class ControllerPlayer  {
     public void inicializar(){
         USUARIO_ONLINE = new UsuarioComum();
         SONGS_ONLINE = new ArrayList<>();
+        PLAYLISTS_ONLINE = new ArrayList<>();
         filaReproducao = new ArrayList<>();
         PlaylistObservableList = FXCollections.observableArrayList();
+        //nameMusicLabel.setText("");
         MusicaObservableList = FXCollections.observableArrayList();
-
     }
     /**
      * Define o usuário online.
@@ -109,10 +110,11 @@ public class ControllerPlayer  {
     public void setUsuarioOnline(Usuario usuario) {
         inicializar();
         nameDiretorio.setText("DIRETÓRIO");
-
         this.USUARIO_ONLINE = usuario;
         this.SONGS_ONLINE = USUARIO_ONLINE.getDirectory().getAllSongs();
         this.usernameLabel.setText("Usuario: " + USUARIO_ONLINE.getNome());
+
+        atualizarListaMusica(SONGS_ONLINE);
 
         if (USUARIO_ONLINE instanceof UsuarioVip){
             vipStatusLabel.setText("VIP ATIVO");
@@ -120,6 +122,7 @@ public class ControllerPlayer  {
             deletePlaylistButton.setDisable(false);
             refreshButton.setDisable(false);
             listViewPlaylist.setDisable(false);
+            PLAYLISTS_ONLINE = ((UsuarioVip) USUARIO_ONLINE).getPlaylists();
             atualizarListaPlaylist();
         } else {
             vipStatusLabel.setText("VIP INATIVO");
@@ -127,6 +130,7 @@ public class ControllerPlayer  {
             deletePlaylistButton.setDisable(true);
             refreshButton.setDisable(true);
             listViewPlaylist.setDisable(true);
+            PLAYLISTS_ONLINE.clear();
         }
         if (USUARIO_ONLINE.isAdmin()){
             mnAdmin.setDisable(false);
@@ -136,9 +140,7 @@ public class ControllerPlayer  {
 
         Image image = new Image("png-user.png");
         userImage.setImage(image);
-
         volumeSlider.setValue(100);
-        atualizarListaMusica(SONGS_ONLINE);
         songProgressBar.setStyle("-fx-accent: #0c0428;");
 
     }
@@ -149,7 +151,6 @@ public class ControllerPlayer  {
      */
     @FXML
     public void removeMusicButton() {
-        System.out.println("removeButton()");
         Musica musicaSelecionada = listViewMusicas.getSelectionModel().getSelectedItem();
         Playlist playlistSelecionada = listViewPlaylist.getSelectionModel().getSelectedItem();
 
@@ -176,7 +177,6 @@ public class ControllerPlayer  {
      */
     @FXML
     public void removePlaylist() {
-        System.out.println("removeButton()");
         //warningLabel.setVisible(false);
         Playlist playlistSelecionada = listViewPlaylist.getSelectionModel().getSelectedItem();
 
@@ -194,7 +194,9 @@ public class ControllerPlayer  {
      */
     @FXML
     public void volume() {
-        mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+        }
     }
 
 
@@ -363,21 +365,19 @@ public class ControllerPlayer  {
      *             As músicas também serão adicionadas à fila de reprodução.
      */
     public void atualizarListaMusica(List<Musica> SONGS) {
+        filaReproducao.clear();
+        MusicaObservableList.clear();
+
+        MusicaObservableList = FXCollections.observableArrayList();
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
-        //  mediaPlayer.dispose();
         if (SONGS != null) {
             for (Musica musica : SONGS) {
                 filaReproducao.add(musica);
-            }
-            MusicaObservableList = FXCollections.observableArrayList();
-            for (Musica musica : SONGS) {
                 MusicaObservableList.add(musica);
             }
-
             listViewMusicas.setItems(MusicaObservableList);
-
             listViewMusicas.setCellFactory(param -> new ListCell<>() {
                 @Override
                 protected void updateItem(Musica musica, boolean empty) {
@@ -406,8 +406,10 @@ public class ControllerPlayer  {
             nameDiretorio.setText("DIRETÓRIO");
             atualizarListaMusica(SONGS_ONLINE);
         } else {
-            atualizarListaPlaylist();
-            exibirPlaylist();
+            if (USUARIO_ONLINE instanceof UsuarioVip) {
+                atualizarListaPlaylist();
+                exibirPlaylist();
+            }
         }
     }
 
@@ -420,7 +422,6 @@ public class ControllerPlayer  {
      */
     @FXML
     public void exibirPlaylist() {
-        System.out.println("exibirPlaylist()");
         atualizarListaPlaylist();
         Playlist playlistSelecionada;
         playlistSelecionada = listViewPlaylist.getSelectionModel().getSelectedItem();
@@ -431,9 +432,6 @@ public class ControllerPlayer  {
             nameDiretorio.setText(playlistSelecionada.getNome());
             diretorioButton.setSelected(false);
 
-            for (Musica musica : playlistSelecionada.getBd_musicasPlay()) {
-                System.out.println(musica.getTitulo());
-            }
         }
 
     }
@@ -499,7 +497,6 @@ public class ControllerPlayer  {
                 dialogStage.close();
             }
         } catch (IOException e) {
-            // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
             System.out.println("Ocorreu um erro ao carregar o painel de nova música.");
             e.printStackTrace();
         }
@@ -513,8 +510,7 @@ public class ControllerPlayer  {
     @FXML
     public void setMnVirarVIP() {
         if (USUARIO_ONLINE instanceof UsuarioVip || USUARIO_ONLINE.isAdmin()) {
-           System.out.println("usuario ja é vip");
-            Alert alerta = new Alert(Alert.AlertType.INFORMATION, "Usuario já possui cadastro VIP");
+            System.out.println("usuario ja é vip");
         } else {
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -538,7 +534,7 @@ public class ControllerPlayer  {
                 if (controllerVIP.isButtonConfirmar()) {
                     USUARIO_ONLINE = controllerVIP.getUsuarioVIP();
                     controllerVIP.setButtonConfirmar(false);
-                    vipStatusLabel.setText("ATIVO");
+                    vipStatusLabel.setText("VIP ATIVO");
                     mnNewPlaylist.setDisable(false);
                     deletePlaylistButton.setDisable(false);
                     refreshButton.setDisable(false);
@@ -546,7 +542,6 @@ public class ControllerPlayer  {
                     // tornarSeVip();
                 }
             } catch (IOException e) {
-                // Trate a exceção adequadamente, exibindo uma mensagem de erro ou realizando outras ações necessárias
                 System.out.println("Ocorreu um erro ao carregar o painel de nova música.");
                 e.printStackTrace();
             }
@@ -602,8 +597,8 @@ public class ControllerPlayer  {
     public void logout() {
         MediaPlayer.changeScreen("login", "");
         this.USUARIO_ONLINE = null;
-        this.PLAYLISTS_ONLINE = null;
-        this.SONGS_ONLINE = null;
+        this.PLAYLISTS_ONLINE=null;
+        this.SONGS_ONLINE=null;
         this.media = null;
         this.filaReproducao = null;
         if (mediaPlayer != null) {
@@ -615,6 +610,9 @@ public class ControllerPlayer  {
             cancelTimer();
             timer = null;
         }
+
+        MusicaObservableList.clear();
+        PlaylistObservableList.clear();
     }
 
     /**

@@ -1,26 +1,23 @@
 package ufrn.imd.DAO;
 
-import ufrn.imd.entities.*;
+import ufrn.imd.entities.ArquivoUtil;
+import ufrn.imd.entities.Directory;
+import ufrn.imd.entities.Musica;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Classe responsável por acessar e manipular os dados dos diretórios.
  */
 public class diretoriosDAO {
-    private static final String SRC_DIRETORIOS = "src/diretorios.txt";
-    private static final String SRC_MUSICAS = "src/musicas.txt";
+    private static final String SRC_DIRETORIOS = "demo1/src/diretorios.txt";
+    private static final String SRC_MUSICAS = "demo1/src/musicas.txt";
     private static List<String> bd_dir_caminhos;
     private static List<Directory> bd_diretorios;
     private static List<Musica> bd_allMusica;
-    private ArquivoUtil arquivo = new ArquivoUtil();
+    private final ArquivoUtil arquivo = new ArquivoUtil();
 
     /**
      * Construtor padrão.
@@ -30,6 +27,18 @@ public class diretoriosDAO {
         bd_diretorios = new ArrayList<>();
         bd_allMusica = new ArrayList<>();
 
+    }
+
+    public static List<Directory> getBd_diretorios() {
+        return bd_diretorios;
+    }
+
+    public static final String getSrcMusicas() {
+        return SRC_MUSICAS;
+    }
+
+    public static List<Musica> getBd_allMusica() {
+        return bd_allMusica;
     }
 
     /**
@@ -65,6 +74,7 @@ public class diretoriosDAO {
             e.printStackTrace();
         }
     }
+
     /**
      * Lê os dados das músicas a partir do arquivo de texto.
      */
@@ -105,6 +115,9 @@ public class diretoriosDAO {
         return true;
     }
 
+
+    // Métodos não implementados
+
     /**
      * Salva um diretório no arquivo de texto.
      *
@@ -124,18 +137,15 @@ public class diretoriosDAO {
             }
         }
         for (Musica musica : apagar) {
-            if (bd_allMusica.contains(musica)) {
-                bd_allMusica.remove(musica);
-            }
+            bd_allMusica.remove(musica);
         }
         atualizarArquivoMusica(bd_allMusica);
 
-            File musica = new File(caminho);
-            if (musica != null) {
-                musica.delete();
-            }
+        File musica = new File(caminho);
+        if (musica != null) {
+            musica.delete();
+        }
     }
-
 
     /**
      * Exclui um diretório do DAO e do arquivo de texto.
@@ -149,9 +159,6 @@ public class diretoriosDAO {
         atualizarArquivo(bd_dir_caminhos);
         return true;
     }
-
-
-    // Métodos não implementados
 
     public void atualizarArquivo(List<String> diretorios) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(SRC_DIRETORIOS, false))) {
@@ -172,18 +179,6 @@ public class diretoriosDAO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public static List<Directory> getBd_diretorios() {
-        return bd_diretorios;
-    }
-
-    public static final String getSrcMusicas() {
-        return SRC_MUSICAS;
-    }
-
-    public static List<Musica> getBd_allMusica() {
-        return bd_allMusica;
     }
 
 

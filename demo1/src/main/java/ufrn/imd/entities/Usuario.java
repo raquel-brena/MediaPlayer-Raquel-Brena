@@ -8,6 +8,7 @@ import java.util.List;
  * Classe abstrata que representa um usuário do sistema.
  */
 public abstract class Usuario {
+    private static final usuarioDAO DAO_USUARIO = new usuarioDAO();
     private static int nextId = 1;
     private int id;
     private String nome;
@@ -16,7 +17,6 @@ public abstract class Usuario {
     private boolean isAdmin;
     private Directory directory;
     private boolean isOnline;
-    private static final usuarioDAO DAO_USUARIO = new usuarioDAO();
 
     /**
      * Construtor padrão.
@@ -27,10 +27,10 @@ public abstract class Usuario {
     /**
      * Construtor que recebe os dados do usuário.
      *
-     * @param nome     O nome do usuário.
-     * @param email    O email do usuário.
-     * @param senha    A senha do usuário.
-     * @param isAdmin  Indica se o usuário é um administrador.
+     * @param nome    O nome do usuário.
+     * @param email   O email do usuário.
+     * @param senha   A senha do usuário.
+     * @param isAdmin Indica se o usuário é um administrador.
      */
     public Usuario(String nome, String email, String senha, boolean isAdmin) {
         this.id = getNextId();
@@ -53,12 +53,12 @@ public abstract class Usuario {
     }
 
     /**
-     * Define o ID do usuário.
+     * Obtém o DAO do usuário.
      *
-     * @param id O ID do usuário.
+     * @return O DAO do usuário.
      */
-    public void setId(int id) {
-        this.id = id;
+    public static usuarioDAO getDaoUsuario() {
+        return DAO_USUARIO;
     }
 
     /**
@@ -68,6 +68,15 @@ public abstract class Usuario {
      */
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * Define o ID do usuário.
+     *
+     * @param id O ID do usuário.
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -150,8 +159,8 @@ public abstract class Usuario {
     public boolean createDirectory() {
         if (!isAdmin) {
             if (directory.createPath(nome)) {
-                directory.getDaoDiretorios().salvarMemoria(directory);
-                directory.getDaoDiretorios().salvarSrcDiretorio(directory);
+                Directory.getDaoDiretorios().salvarMemoria(directory);
+                Directory.getDaoDiretorios().salvarSrcDiretorio(directory);
             }
             return true;
         } else {
@@ -175,15 +184,6 @@ public abstract class Usuario {
      */
     public void setAdmin(boolean isAdmin) {
         this.isAdmin = isAdmin;
-    }
-
-    /**
-     * Obtém o DAO do usuário.
-     *
-     * @return O DAO do usuário.
-     */
-    public static usuarioDAO getDaoUsuario() {
-        return DAO_USUARIO;
     }
 
     /**

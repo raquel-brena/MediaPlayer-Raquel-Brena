@@ -2,17 +2,20 @@ package ufrn.imd.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
-import ufrn.imd.DAO.usuarioDAO;
-import ufrn.imd.entities.*;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import ufrn.imd.DAO.usuarioDAO;
+import ufrn.imd.entities.Musica;
+import ufrn.imd.entities.Usuario;
+import ufrn.imd.entities.UsuarioComum;
+import ufrn.imd.entities.UsuarioVip;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javafx.fxml.Initializable;
-import javafx.stage.Stage;
 
 /**
  * Controlador para o painel de cadastro de usuários.
@@ -21,10 +24,8 @@ public class ControllerAdmin implements Initializable {
 
     @FXML
     private TextField textFieldCadastroNome;
-
     @FXML
     private TextField textFieldCadastroEmail;
-
     @FXML
     private TextField textFieldCadastroSenha;
 
@@ -47,11 +48,6 @@ public class ControllerAdmin implements Initializable {
     private ObservableList<Usuario> usuariosObservableList;
     private List<Usuario> usuariosCadastrados;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
-    }
-
     /**
      * Construtor da classe controllerCadastros.
      * Cria uma nova instância de UsuarioComum.
@@ -67,32 +63,30 @@ public class ControllerAdmin implements Initializable {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+    }
 
     @FXML
-    public void selecionarUsuario(){
-        System.out.println("exibirPlaylist()");
+    public void selecionarUsuario() {
         atualizarListaUsuarios();
 
         usuarioSelecionado = listViewUsuarios.getSelectionModel().getSelectedItem();
-        if (usuarioSelecionado!=null) {
-            List <Musica> musicasUsuarioSelecionado = usuarioSelecionado.getDirectory().getAllSongs();
+        if (usuarioSelecionado != null) {
+            List<Musica> musicasUsuarioSelecionado = usuarioSelecionado.getDirectory().getAllSongs();
 
             atualizarListaMusica(musicasUsuarioSelecionado);
-            usernameLabel.setText(usuarioSelecionado.getNome());
+            usernameLabel.setText(usuarioSelecionado.getNome().toUpperCase());
 
-            if (usuarioSelecionado instanceof UsuarioVip){
+            if (usuarioSelecionado instanceof UsuarioVip) {
                 vipStatusLabel.setText("VIP ATIVO");
-            }else{
+            } else {
                 vipStatusLabel.setText("VIP INATIVO");
             }
-
-          //  for (Musica musica : playlistSelecionada.getBd_musicasPlay()){
-            //    System.out.println(musica.getTitulo());
-           // }
         }
     }
 
-    public void atualizarListaMusica(List <Musica> SONGS) {
+    public void atualizarListaMusica(List<Musica> SONGS) {
 
         if (SONGS != null) {
             MusicaObservableList = FXCollections.observableArrayList();
@@ -164,26 +158,18 @@ public class ControllerAdmin implements Initializable {
 
     @FXML
     public void removeMusicButton() {
-        System.out.println("removeButton()");
-
         usuarioSelecionado = listViewUsuarios.getSelectionModel().getSelectedItem();
 
-            // Remova o usuário selecionado do banco de dados ou outra ação necessária
-
-        usuarioSelecionado.getDirectory().excluirTodasAsMusicas();
-        if (usuarioSelecionado instanceof UsuarioVip){
+        usuarioSelecionado.getDirectory().excluirTodasAsMusicas(); //atualizar para excluir pasta
+        if (usuarioSelecionado instanceof UsuarioVip) {
             ((UsuarioVip) usuarioSelecionado).excluirTodasAsPlaylists();
         }
-
-        usuarioDAO.getBd_usuarios().remove(usuarioSelecionado);
+        usuarioDAO.remove(usuarioSelecionado.getId());
         atualizarListaUsuarios();
-            // Limpe qualquer seleção
-            listViewUsuarios.getSelectionModel().clearSelection();
-            atualizarListaMusica(null);
-        }
 
-
-
+        listViewUsuarios.getSelectionModel().clearSelection();  // Limpe qualquer seleção
+        atualizarListaMusica(null);
+    }
 
     /**
      * Obtém o novo usuário cadastrado.
@@ -220,7 +206,6 @@ public class ControllerAdmin implements Initializable {
             alert.setHeaderText("Email ou Nickname já cadastrado");
             alert.setContentText("Por favor, tente novamente.");
             alert.showAndWait();
-            return;
         } else {
             Usuario novoID = new UsuarioComum(nome, email, senha, false);
 

@@ -1,7 +1,6 @@
 package ufrn.imd.entities;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +27,15 @@ public class UsuarioVip extends Usuario {
         playlists = new ArrayList<>();
     }
 
-    public void criarPlaylist (String nomePlaylist, List<Musica> songsPlaylist)  {
+    public void criarPlaylist(String nomePlaylist, List<Musica> songsPlaylist) {
         Playlist playlist = new Playlist();
 
         playlist.setNome(nomePlaylist);
         playlist.setBd_musicasPlay(songsPlaylist);
 
-        System.out.println("criarPlaylist()");
-        for(Musica musica : playlist.getBd_musicasPlay()){
-            System.out.println(musica.getTitulo());
-        }
         playlists.add(playlist);
         Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
-        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist(getId(), playlists);
     }
 
     /**
@@ -53,16 +48,14 @@ public class UsuarioVip extends Usuario {
         folder.delete();
     }
 
-    public void excluirMusicadePlaylists (Musica musicaSelecionada) {
-            for (Playlist playlist : playlists) {
-                if (playlist.getBd_musicasPlay().contains(musicaSelecionada)) {
-                    playlist.getBd_musicasPlay().remove(musicaSelecionada);
-                }
-            }
-       atualizarPlaylists();
+    public void excluirMusicadePlaylists(Musica musicaSelecionada) {
+        for (Playlist playlist : playlists) {
+            playlist.getBd_musicasPlay().remove(musicaSelecionada);
+        }
+        atualizarPlaylists();
     }
 
-    public void adicionarMusicaPlaylist (String nomePlaylist, Musica musicaSelecionada) {
+    public void adicionarMusicaPlaylist(String nomePlaylist, Musica musicaSelecionada) {
         for (Playlist playlist : playlists) {
             if (playlist.getNome().equals(nomePlaylist)) {
                 playlist.getBd_musicasPlay().add(musicaSelecionada);
@@ -71,16 +64,17 @@ public class UsuarioVip extends Usuario {
         atualizarPlaylists();
     }
 
-    public void excluirTodasAsPlaylists(){
+    public void excluirTodasAsPlaylists() {
         playlists.clear();
         Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
-        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist(getId(), playlists);
     }
 
-    public void atualizarPlaylists(){
+    public void atualizarPlaylists() {
         Playlist.getDaoPlaylist().salvarMemoriaPlaylistsUsuario(getId(), playlists);
-        Playlist.getDaoPlaylist().salvarSrcPlaylist (getId(), playlists);
+        Playlist.getDaoPlaylist().salvarSrcPlaylist(getId(), playlists);
     }
+
     /**
      * Obtém a lista de playlists do usuário VIP.
      *

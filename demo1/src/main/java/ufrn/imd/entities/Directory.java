@@ -23,7 +23,7 @@ public class Directory {
     }
 
     public boolean createPath(String nomeUsuario) {
-        this.caminho = "src/main/diretorios/" + nomeUsuario + "Diretorio";
+        this.caminho = "demo1/src/main/diretorios/" + nomeUsuario + "Diretorio";
         File diretorioUsuario = new File(caminho);
 
         if (diretorioUsuario.exists()) {

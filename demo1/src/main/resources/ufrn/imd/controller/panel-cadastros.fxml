@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.controllerCadastros">
+<AnchorPane prefHeight="187.0" prefWidth="513.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ufrn.imd.controller.controllerCadastros">
     <children>
-        <Pane layoutX="123.0" layoutY="83.0" prefHeight="111.0" prefWidth="335.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
+        <Pane layoutX="89.0" layoutY="24.0" prefHeight="111.0" prefWidth="335.0" style="-fx-background-color: #daff7c; -fx-background-radius: 90;">
          <children>
               <GridPane alignment="CENTER" layoutX="44.0" layoutY="11.0" prefHeight="90.0" prefWidth="227.0">
                   <columnConstraints>
@@ -33,8 +33,8 @@
                   </children>
               </GridPane>
          </children></Pane>
-        <Button fx:id="CadastroBotaoConfirmar" layoutX="258.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleButtonConfirmar" text="Confirmar" AnchorPane.bottomAnchor="173.0" AnchorPane.rightAnchor="266.0" />
-        <Button fx:id="CadastroBotaoCancelar" layoutX="345.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar" AnchorPane.bottomAnchor="173.0" AnchorPane.rightAnchor="187.0" />
+        <Button fx:id="CadastroBotaoConfirmar" layoutX="224.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleButtonConfirmar" text="Confirmar" />
+        <Button fx:id="CadastroBotaoCancelar" layoutX="311.0" layoutY="141.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar" />
     </children>
 
 </AnchorPane>

@@ -15,24 +15,19 @@ import java.util.ResourceBundle;
 
 public class ControllerVIP implements Initializable {
 
-    @FXML
-    private Label valorVIP;
-
-    @FXML
-    private Label msgSucessoLabel;
-
-
-    @FXML
-    private Button virarVIPButton;
-
-    @FXML
-    private Button cancelarButton;
-
-    private boolean buttonConfirmar;
-
     UsuarioVip usuarioVIP;
     UsuarioComum usuarioComum;
+    @FXML
+    private Label valorVIP;
+    @FXML
+    private Label msgSucessoLabel;
+    @FXML
+    private Button virarVIPButton;
+    @FXML
+    private Button cancelarButton;
+    private boolean buttonConfirmar;
     private Stage dialogStage;
+
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
         buttonConfirmar = false;
@@ -48,15 +43,14 @@ public class ControllerVIP implements Initializable {
     }
 
     @FXML
-    public void comprarVIP(){
+    public void comprarVIP() {
         //usuarioVIP = new UsuarioVip();
-       this.usuarioVIP = Usuario.getDaoUsuario().updateVIP((UsuarioComum) getUsuarioComum());
-        System.out.println("comprarVIP: "+usuarioVIP.getNome());
+        this.usuarioVIP = Usuario.getDaoUsuario().updateVIP((UsuarioComum) getUsuarioComum());
 
         if (usuarioVIP != null) {
             this.buttonConfirmar = true;
             msgSucessoLabel.setVisible(true);
-    }
+        }
     }
 
     @FXML
@@ -76,9 +70,6 @@ public class ControllerVIP implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-    public void setUsuarioComum(UsuarioComum usuarioOnline) {
-        this.usuarioComum = usuarioOnline;
-    }
 
     public Usuario getUsuarioVIP() {
         return this.usuarioVIP;
@@ -86,5 +77,9 @@ public class ControllerVIP implements Initializable {
 
     public Usuario getUsuarioComum() {
         return usuarioComum;
+    }
+
+    public void setUsuarioComum(UsuarioComum usuarioOnline) {
+        this.usuarioComum = usuarioOnline;
     }
 }

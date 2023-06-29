@@ -13,14 +13,23 @@ import java.util.Map;
  */
 public class playlistDAO {
 
+    private static final String PLAYLISTS_FOLDER_PATH = "demo1/src/playlists/";
     private static Map<Integer, List<Playlist>> playlistsDatabase;
-    private static final String PLAYLISTS_FOLDER_PATH = "src/playlists/";
 
     /**
      * Construtor padrão.
      */
     public playlistDAO() {
         playlistsDatabase = new HashMap<>();
+    }
+
+    /**
+     * Obtém o banco de dados das playlists.
+     *
+     * @return O banco de dados das playlists.
+     */
+    public static Map<Integer, List<Playlist>> getPlaylistsDatabase() {
+        return playlistsDatabase;
     }
 
     /**
@@ -52,7 +61,7 @@ public class playlistDAO {
     private Pair<Integer, Playlist> lerPlaylistArquivo(File arquivo) {
         Integer idPlaylist = null;
         Playlist playlist = null;
-        List<Musica> allMusics = Directory.getDaoDiretorios().getBd_allMusica();
+        List<Musica> allMusics = diretoriosDAO.getBd_allMusica();
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo.getPath()))) {
             String idPlaylistStr = br.readLine();
@@ -144,15 +153,6 @@ public class playlistDAO {
 
         bufferedWriter.close();
         fileWriter.close();
-    }
-
-    /**
-     * Obtém o banco de dados das playlists.
-     *
-     * @return O banco de dados das playlists.
-     */
-    public static Map<Integer, List<Playlist>> getPlaylistsDatabase() {
-        return playlistsDatabase;
     }
 
 

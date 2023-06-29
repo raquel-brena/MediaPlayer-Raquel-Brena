@@ -23,11 +23,11 @@ public class ControllerNovaPlaylist {
     private ListView<Musica> listViewSongsPlaylist;
     @FXML
     private ListView<Musica> listViewSongsDiretorio;
-    private ObservableList<Musica> MusicaObservableListPlaylist;
-    private ObservableList<Musica> MusicaObservableListDiretorio;
-    private UsuarioVip usuarioVIP =  new UsuarioVip();
+    private final ObservableList<Musica> MusicaObservableListPlaylist;
+    private final ObservableList<Musica> MusicaObservableListDiretorio;
+    private UsuarioVip usuarioVIP = new UsuarioVip();
     private List<Musica> SONGS_ONLINE_DIRETORIO;
-    private List<Musica> SONGS_PLAYLIST;
+    private final List<Musica> SONGS_PLAYLIST;
     private boolean buttonConfirmar;
     private Stage dialogStage;
     private String nomePlaylist;
@@ -40,13 +40,12 @@ public class ControllerNovaPlaylist {
         buttonConfirmar = false;
     }
 
-    public String getNomePlaylist (){
+    public String getNomePlaylist() {
         this.nomePlaylist = nomePlaylistTextField.getText();
         return this.nomePlaylist;
     }
 
-
-    public List<Musica> getSongsPlaylist(){
+    public List<Musica> getSongsPlaylist() {
         return SONGS_PLAYLIST;
     }
 
@@ -62,18 +61,9 @@ public class ControllerNovaPlaylist {
             voltar();
         }
     }
-/*
-        if (nomePlaylistTextField.getText().isEmpty()) {
-            warningLabel.setVisible(true);
-            warningLabel.setText("É obrigatório adicionar um nome para a sua playlist");
-        } else {
-            this.new_playlist.setNome(nomePlaylistTextField.getText());
-            this.new_playlist.setBd_musicasPlay(this.SONGS_PLAYLIST);
-
-        }*/
 
 
-    public void limparTela(){
+    public void limparTela() {
         MusicaObservableListPlaylist.clear();
         MusicaObservableListDiretorio.clear();
         nomePlaylistTextField.clear();
@@ -141,9 +131,9 @@ public class ControllerNovaPlaylist {
     }
 
     @FXML
-    public void voltar (){
+    public void voltar() {
         warningLabel.setVisible(false);
-        MediaPlayer.changeScreen("player",usuarioVIP.getNome());
+        MediaPlayer.changeScreen("player", usuarioVIP.getNome());
         limparTela();
     }
 
