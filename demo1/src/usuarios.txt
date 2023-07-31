@@ -1,5 +1,0 @@
-1,Usuario1,email@email.com,senha,false,UsuarioComum
-2,Usuario2,email2@email.com,senha,false,UsuarioVip
-3,Raquel,rb@email.com,senha,false,UsuarioVip
-4,Usuario4,email4@email.com,senha,false,UsuarioComum
-5,João Carlos,jc@email.com,senha,false,UsuarioVip

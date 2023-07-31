@@ -30,7 +30,6 @@ public class Directory {
             System.out.println("A pasta de músicas do usuário já existe.");
             return false;
         }
-
         if (diretorioUsuario.mkdirs()) {
             this.file = diretorioUsuario;
             System.out.println("Pasta de músicas do usuário criada com sucesso.");
